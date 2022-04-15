@@ -1,0 +1,29 @@
+[{"name":"Trees",
+  "color":"#d8d4e5",
+  "variants":["Maple", "White birch", "Oak", "Ash", "Elm", "Shagbark hickory"],
+  "observations":[
+    {"variant": "Maple", "time":"20220322T14:53"},
+    {"variant": "Oak", "time":"20220321T14:53"},
+    {"variant": "Maple", "time":"20220321T14:53"},
+    {"variant": "Ash", "time":"20220321T14:53"},
+    {"variant": "Oak", "time":"20220321T14:53"},
+    {"variant": "Maple", "time":"20220316T15:53"},
+    {"variant": "Birch", "time":"20220321T14:57"},
+    {"variant": "Shagbark hickory", "time":"20220321T14:53"},
+    {"variant": "Maple", "time":"20220323T04:53"}
+  ]},
+  {"name":"Cars",
+    "color":"#dde6ed",
+    "variants":["Toyota", "Subaru", "Mazda", "BMW", "Tesla", "Ford"],
+    "observations":[
+      {"variant": "Subaru", "time":"20220322T14:53"},
+      {"variant": "Toyota", "time":"20220321T14:53"},
+      {"variant": "Ford", "time":"20220321T14:53"},
+      {"variant": "Mazda", "time":"20220321T14:53"},
+      {"variant": "Mazda", "time":"20220321T14:53"},
+      {"variant": "Subaru", "time":"20220316T15:53"},
+      {"variant": "Kia", "time":"20220321T14:57"},
+      {"variant": "Tesla", "time":"20220321T14:53"},
+      {"variant": "Subaru", "time":"20220323T04:53"}
+    ]}
+]
