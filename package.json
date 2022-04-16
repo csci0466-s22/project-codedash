@@ -1,8 +1,12 @@
 {
-  "name" : "project-starter",
+  "name": "code-dash",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-  "author": "Your Name <your-email@middlebury.edu>",
+  "authors": [
+    "Wayne Wang <sw@middlebury.edu>",
+    "Nicholas Sliter <nsliter@middlebury.edu>",
+    "Cliff Yang <yicheny@middlebury.edu"
+  ],
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
