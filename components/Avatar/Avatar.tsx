@@ -56,6 +56,7 @@ function Avatar({user, size, clickable=true}: AvatarProps) {
               : 30,
           alignItems: "center",
           justifyContent: "center",
+          overflow: "hidden",
         }}
       >
         <Image
@@ -65,7 +66,7 @@ function Avatar({user, size, clickable=true}: AvatarProps) {
           style={{
             width: "100%",
             height: "100%",
-            resizeMode: "contain",
+            resizeMode: "cover",
             borderWidth: 2,
             borderColor: "#fff",
             borderRadius:

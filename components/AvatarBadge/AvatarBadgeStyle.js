@@ -1,42 +1,32 @@
-import EStyleSheet from 'react-native-extended-stylesheet';
 import { StyleSheet } from 'react-native';
 
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
-    alignItems: "left",
-    justifyContent: "middle",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center",
     borderRadius: 30,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#ffffff",
     height: 42,
     width: 180,
-    overflox: "hidden",
+    overflow: "hidden",
   },
   avatar: {
-    flex: 0,
     position: "relative",
-    left: -1,
+    left: -2,
     display: "flex",
-    justifyContent: "middle",
-    alignItems: "left",
+    alignItems: "flex-start",
   },
   nameBadge: {
-    flex: 1,
-    justifyContent: 'center',
-    position: "relative",
-    left: 40,
-    top: 8,
-    height: 10,
-    width: 130,
+    flex: 1, //needed to truncate text
     paddingHorizontal: 0,
+    paddingRight: 4,
     fontSize: 16,
     color: "#ffffff",
-    textOverflow: "ellipsis",
   },
 });
 
 
-EStyleSheet.build();
 export default styles;
