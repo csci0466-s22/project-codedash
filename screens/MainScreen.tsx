@@ -10,7 +10,7 @@ function MainScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
         <Image
-          source={require("./assets/logo-codedash.png")}
+          source={require("../assets/logo-codedash.png")}
           style={{
             width: "100%",
             height: 100,
