@@ -8,7 +8,7 @@ import NativeIconicIcon from '../components/NativeIconicIcon';
 
 const Tab = createBottomTabNavigator();
 
-function BottomTabNav({ route }) {
+function BottomTabNav() {
 
   return (
     <Tab.Navigator

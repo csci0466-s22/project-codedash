@@ -1,44 +1,19 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
-import Avatar from './components/Avatar';
-import AvatarBadge from './components/AvatarBadge';
+import { StyleSheet } from 'react-native';
+import BottomTabNav from './navigation/BottomTabNav';
 
 export default function App() {
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.main}>
-        <Image
-          source={require("./assets/logo-codedash.png")}
-          style={{
-            width: "100%",
-            height: 100,
-            resizeMode: "contain",
-          }}
-        ></Image>
-        <Avatar
-          user={{
-            id: "123",
-            name: "Nich",
-            avatar:
-              "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-          }}
-          size="small"
-          clickable={true}
-        ></Avatar>
-        <AvatarBadge
-          user={{
-            id: "123",
-            name: "NicholasSliterrrrrrrrrrr",
-            avatar:
-              "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-          }}
-        />
-        <StatusBar style="light" />
-      </View>
-    </SafeAreaView>
+    <NavigationContainer >
+      
+      <BottomTabNav />
+      <StatusBar style="light" />
+
+    </NavigationContainer>
+
   );
 }
 
