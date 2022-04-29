@@ -7,9 +7,11 @@ import Post from "../../lib/types/post";
 
 interface CardProps {
   post: Post;
+  size?: "small" | "large";
 };
 
-function Card({post}: CardProps) {
+
+function Card({post, size="large"}: CardProps) {
   return (
     <View style={styles.CardContainer}>
       <View style={styles.CardHeader}>
