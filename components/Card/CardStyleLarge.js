@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 10,
   },
+  LikeCount: {
+    color: 'white'
+  },
 });
 
 

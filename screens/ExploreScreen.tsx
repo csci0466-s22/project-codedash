@@ -3,6 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import NativeIconicIcon from '../components/NativeIconicIcon';
 import Avatar from "../components/Avatar";
 import AvatarBadge from "../components/AvatarBadge";
+import Card from "../components/Card";
+import examplePost from "../examplePost";
 
 
 const Stack = createStackNavigator();
@@ -22,6 +24,9 @@ function ExploreScreen({ navigation }: { navigation: any }) {
           size="small"
           clickable={true}
         />
+      </View>
+      <View style={styles.smallCardsContainer}>
+        <Card post={examplePost} size="small"/>
       </View>
     </View >
   )
@@ -43,6 +48,8 @@ const styles = StyleSheet.create({
     top: 60,
     right: 20,
   },
+  smallCardsContainer: {
+  }
 });
 
 export default ExploreScreen;
