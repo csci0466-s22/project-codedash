@@ -1,7 +1,26 @@
+import { Language } from "prism-react-renderer";
 import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import Avatar from "../components/Avatar";
 import AvatarBadge from "../components/AvatarBadge";
-import Code from "../components/Code";
+import Card from "../components/Card";
+
+
+const examplePost = {
+  id: "1",
+  user: {
+    id: "1",
+    name: "John Doe",
+    avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
+  },
+  code: `import React from "react";
+import { View, Text } from "react-native";
+return(null);`,
+  language: "typescript" as Language,
+  createdAt: new Date(),
+  voteCount: 10,
+};
+
+
 
 
 function MainScreen() {
@@ -27,26 +46,7 @@ function MainScreen() {
           }}
         />
       </View>
-      <View style={styles.testPost}>
-        <View style={styles.testPostHeader}>
-          <AvatarBadge
-            user={{
-              id: "123",  
-              name: "NicholasSliter",
-              avatar:
-                "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-            }}
-          />
-        </View>
-        <Code code={`
-function someDemo() {
-  var test = "Hello World!";
-  console.log(test);
-})();
-
-return () => <App />;
-`} language="jsx" />
-      </View>
+      <Card post={examplePost} />
     </SafeAreaView>
   )
 }
@@ -67,42 +67,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 60,
     right: 20,
-  },
-  testPost: {
-    flex: 0,
-    backgroundColor: "#252526",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
-    shadowColor: "#000",
-    width: "90%",
-    height: 520,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#333333",
-    overflow: "hidden",
-  },
-  testPostHeader: {
-    flex: 0,
-    width: "100%",
-    height: 50,
-    backgroundColor: "#38383B",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
-    shadowColor: "#000",
-    justifyContent: "center",
-    paddingHorizontal: 10,
   },
 });
 

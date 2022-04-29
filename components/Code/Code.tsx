@@ -8,19 +8,15 @@ import theme from "prism-react-renderer/themes/okaidia";
 
 interface CodeProps {
   code: string;
-  language: string;
+  language: Language;
 };
 
 
 function Code({code, language}: CodeProps){
 
-
-  //assume langagaue is in the Language enum
-  const lang = language as Language;
-
   return (
     <View style={styles.container}>
-      <Highlight {...defaultProps} theme={theme} code={code} language={lang}>
+      <Highlight {...defaultProps} theme={theme} code={code} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <View style={[styles.container, style, {backgroundColor: "transparent"}]}>
             {tokens.map((line, i) => (
