@@ -1,6 +1,6 @@
 import styles from './CodeStyle';
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
-import {View, Text} from 'react-native';
+import {View, Text, Platform} from 'react-native';
 //import theme from "prism-react-renderer/themes/nightOwl";
 import theme from "prism-react-renderer/themes/okaidia";
 
@@ -14,6 +14,8 @@ interface CodeProps {
 
 function Code({code, language}: CodeProps){
 
+  const fontFamily = Platform.OS === "ios" ? "Courier" : "monospace";
+
   return (
     <View style={styles.container}>
       <Highlight {...defaultProps} theme={theme} code={code} language={language}>
@@ -24,7 +26,16 @@ function Code({code, language}: CodeProps){
                 {line.map((token, key) => {
                   const props = getTokenProps({ token, key });
                   return (
-                    <Text key={props.key} style={{color: props.style?.color ?? "#fff"} as any}>
+                    <Text
+                      key={props.key}
+                      style={
+                        {
+                          color: props.style?.color ?? "#fff",
+                          fontFamily: fontFamily,
+                          fontSize: 12,
+                        } as any
+                      }
+                    >
                       {props.children}
                     </Text>
                   );
