@@ -17,8 +17,8 @@ function BottomTabNav() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#333333',
-          borderTopWidth: 0
+          backgroundColor: "#1C1C17",
+          borderTopWidth: 0,
         },
       }}
     >
@@ -27,7 +27,9 @@ function BottomTabNav() {
         component={PostingScreen}
         options={{
           tabBarActiveTintColor: tabBarActiveTintColor,
-          tabBarIcon: ({ color, size }) => <NativeIconicIcon name="create" color={color} size={size} />
+          tabBarIcon: ({ color, size }) => (
+            <NativeIconicIcon name="create" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen
@@ -35,7 +37,9 @@ function BottomTabNav() {
         component={MainStack}
         options={{
           tabBarActiveTintColor: tabBarActiveTintColor,
-          tabBarIcon: ({ color, size }) => <NativeIconicIcon name="logo-buffer" color={color} size={size} />
+          tabBarIcon: ({ color, size }) => (
+            <NativeIconicIcon name="logo-buffer" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen
@@ -43,12 +47,13 @@ function BottomTabNav() {
         component={ExploreStack}
         options={{
           tabBarActiveTintColor: tabBarActiveTintColor,
-          tabBarIcon: ({ color, size }) => <NativeIconicIcon name="compass"  color={color} size={size} />
+          tabBarIcon: ({ color, size }) => (
+            <NativeIconicIcon name="compass" color={color} size={size} />
+          ),
         }}
       />
     </Tab.Navigator>
-
-  )
+  );
 }
 
 export default BottomTabNav;

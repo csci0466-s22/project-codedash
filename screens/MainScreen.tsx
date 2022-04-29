@@ -1,6 +1,26 @@
+import { Language } from "prism-react-renderer";
 import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import Avatar from "../components/Avatar";
 import AvatarBadge from "../components/AvatarBadge";
+import Card from "../components/Card";
+
+
+const examplePost = {
+  id: "1",
+  user: {
+    id: "1",
+    name: "John Doe",
+    avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
+  },
+  code: `import React from "react";
+import { View, Text } from "react-native";
+return(null);`,
+  language: "typescript" as Language,
+  createdAt: new Date(),
+  voteCount: 10,
+};
+
+
 
 
 function MainScreen() {
@@ -26,6 +46,7 @@ function MainScreen() {
           }}
         />
       </View>
+      <Card post={examplePost} />
     </SafeAreaView>
   )
 }
@@ -33,7 +54,7 @@ function MainScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#211D33",
+    backgroundColor: "#121212",
     alignItems: "center",
     justifyContent: "center",
   },
