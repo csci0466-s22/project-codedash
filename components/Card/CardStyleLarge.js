@@ -23,8 +23,11 @@ const styles = StyleSheet.create({
   },
   CardHeader: {
     flex: 0,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
     width: "100%",
-    height: 50,
+    height: 56,
     backgroundColor: "#38383B",
     shadowOffset: {
       width: 0,
@@ -35,12 +38,18 @@ const styles = StyleSheet.create({
 
     elevation: 4,
     shadowColor: "#000",
-    justifyContent: "center",
     paddingHorizontal: 10,
+    alignItems: "center",
+  },
+  CardHeaderRight: {
+    flex: 0,
+    flexDirection: "row",
+    justifyContent: "center",
   },
   LikeCount: {
-    color: 'white'
-  },
+    color: "#ffffff",
+    marginRight: 10,
+  }
 });
 
 

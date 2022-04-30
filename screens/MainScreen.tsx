@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import Avatar from "../components/Avatar";
 import AvatarBadge from "../components/AvatarBadge";
 import Card from "../components/Card";
-import examplePost from "../examplePost";
+import examplePosts from "../examplePost";
 
 
 function MainScreen() {
@@ -29,7 +29,7 @@ function MainScreen() {
           }}
         />
       </View>
-      <Card post={examplePost} />
+      <Card post={examplePosts[0]} />
     </SafeAreaView>
   )
 }

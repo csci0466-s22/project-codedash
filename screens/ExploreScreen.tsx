@@ -1,18 +1,27 @@
-import { View, Text, StyleSheet, Button, Pressable } from "react-native";
+import { View, Text, StyleSheet, FlatList, ListRenderItem, SafeAreaView } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 import NativeIconicIcon from '../components/NativeIconicIcon';
 import Avatar from "../components/Avatar";
 import AvatarBadge from "../components/AvatarBadge";
 import Card from "../components/Card";
-import examplePost from "../examplePost";
+import examplePosts from "../examplePost";
+import Post from "../lib/types/post";
 
-
-const Stack = createStackNavigator();
 
 function ExploreScreen({ navigation }: { navigation: any }) {
+  const data: Post[] = examplePosts;
+
+  const keyExtractor = (post: Post) => post.id;
+
+  const ItemRenderer: ListRenderItem<Post> = ({ item }) => {
+    return (
+      <Card post={item} size="small" />
+    )
+  };
+
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Explore Screen</Text>
+    <SafeAreaView style={styles.container}>
       <View style={styles.avatarContainer}>
         <Avatar
           user={{
@@ -25,10 +34,17 @@ function ExploreScreen({ navigation }: { navigation: any }) {
           clickable={true}
         />
       </View>
-      <View style={styles.smallCardsContainer}>
-        <Card post={examplePost} size="small"/>
-      </View>
-    </View >
+      <Text style={styles.text}>Explore Screen</Text>
+
+      <FlatList
+        data={data}
+        numColumns={1}
+        keyExtractor={keyExtractor}
+        renderItem={ItemRenderer}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+        showsVerticalScrollIndicator={false}>
+      </FlatList>
+    </SafeAreaView >
   )
 }
 
@@ -42,13 +58,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     color: "#fff",
+    height: 80,
   },
   avatarContainer: {
     position: "absolute",
     top: 60,
     right: 20,
-  },
-  smallCardsContainer: {
   }
 });
 

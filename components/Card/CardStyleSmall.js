@@ -14,12 +14,13 @@ const styles = StyleSheet.create({
 
     elevation: 4,
     shadowColor: "#000",
-    width: "90%",
+    width: "100%",
     height:150,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#333333",
     overflow: "hidden",
+    marginBottom: 30,
   },
   CardHeader: {
     flex: 0,
@@ -29,6 +30,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     alignContent: "center",
     justifyContent: "space-between",
+  },
+  AvatarBadge: {
+    marginTop: 50,
+  },
+  CardHeaderRight: {
+    flex: 0,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   LikeCount: {
     marginTop: 10,
