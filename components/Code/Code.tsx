@@ -14,7 +14,9 @@ interface CodeProps {
 
 function Code({code, language}: CodeProps){
 
-  const fontFamily = Platform.OS === "ios" ? "Courier" : "monospace";
+
+  const courierFont = Platform.Version >= 15 ? 'Courier New' : 'Courier';
+  const fontFamily = Platform.OS === "ios" ? courierFont : "monospace";
 
   return (
     <View style={styles.container}>
@@ -33,6 +35,7 @@ function Code({code, language}: CodeProps){
                           color: props.style?.color ?? "#fff",
                           fontFamily: fontFamily,
                           fontSize: 12,
+                          fontWeight: props.style?.fontWeight ?? "bold",
                         } as any
                       }
                     >
