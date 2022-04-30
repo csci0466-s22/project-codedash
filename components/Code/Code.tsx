@@ -3,6 +3,7 @@ import Highlight, { defaultProps, Language } from "prism-react-renderer";
 import {View, Text, Platform} from 'react-native';
 //import theme from "prism-react-renderer/themes/nightOwl";
 import theme from "prism-react-renderer/themes/okaidia";
+import { useFonts } from 'expo-font';
 
 
 
@@ -14,9 +15,13 @@ interface CodeProps {
 
 function Code({code, language}: CodeProps){
 
+  let [fontsLoaded] = useFonts({
+    Hack: require("../../assets/fonts/Hack-Regular.ttf"),
+  });
 
   const courierFont = Platform.Version >= 15 ? 'Courier New' : 'Courier';
-  const fontFamily = Platform.OS === "ios" ? courierFont : "monospace";
+  const platformFont = Platform.OS === "ios" ? courierFont : "monospace";
+  const fontFamily = (fontsLoaded) ? "Hack" : platformFont;
 
   return (
     <View style={styles.container}>
@@ -35,7 +40,7 @@ function Code({code, language}: CodeProps){
                           color: props.style?.color ?? "#fff",
                           fontFamily: fontFamily,
                           fontSize: 12,
-                          fontWeight: props.style?.fontWeight ?? "bold",
+                          fontWeight: props.style?.fontWeight ?? "normal",
                         } as any
                       }
                     >
