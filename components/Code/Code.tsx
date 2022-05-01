@@ -13,14 +13,8 @@ interface CodeProps {
 
 
 function Code({code, language}: CodeProps){
-
-  return (
-    <View style={styles.container}>
-      <Highlight {...defaultProps} theme={theme} code={code} language={language}>
-        {({ style, tokens, getLineProps, getTokenProps }) => (
-          <View style={[styles.container, style, {backgroundColor: "transparent"}]}>
-            {tokens.map((line, i) => (
-              <View key={i} {...getLineProps({ line, key: i, style: styles.row }).style}>
+/*
+<View key={i} {...getLineProps({ line, key: i, style: styles.row }).style}>
                 {line.map((token, key) => {
                   const props = getTokenProps({ token, key });
                   return (
@@ -30,7 +24,32 @@ function Code({code, language}: CodeProps){
                   );
                 })}
               </View>
-            ))}
+*/
+
+  return (
+    <View style={styles.container}>
+      <Highlight {...defaultProps} theme={theme} code={code} language={language}>
+        {({ style, tokens, getLineProps, getTokenProps }) => (
+          <View style={[styles.container, style, {backgroundColor: "transparent"}]}>
+            {tokens.map((line, i) => {
+              return <View key={i} {...getLineProps({ line, key: i, style: styles.row }).style}>
+                {line.map((token, key) => {
+                  const props = getTokenProps({ token, key });
+                  if (token.empty) {
+                    return <Text key={props.key} style={{color: "#252526"} as any}>
+                        O.O
+                      </Text>
+                  } else {
+                    return (
+                      <Text key={props.key} style={{color: props.style?.color ?? "#fff"} as any}>
+                        {props.children}
+                      </Text>
+                    );
+                  }
+                  
+                })}
+              </View>;
+            })}
           </View>
         )}
       </Highlight>
