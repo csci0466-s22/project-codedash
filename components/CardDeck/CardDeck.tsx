@@ -1,3 +1,8 @@
+/**
+ * Inspired by Florian Marcu's blog post:
+ * https://instamobile.io/react-native-controls/react-native-swipe-cards-tinder/
+ */
+
 import styles from "./CardDeckStyle";
 import { Animated, View, PanResponder } from "react-native";
 import { useRef, useState } from "react";
@@ -5,7 +10,6 @@ import Post from "../../lib/types/post";
 import Card from "../Card/Card";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Dimensions } from "react-native";
-import { scalar } from "@tensorflow/tfjs";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -15,17 +19,17 @@ function CardDeck({ posts }: { posts: Post[] }) {
 
   const rotation = position.x.interpolate({
     inputRange: [-screenWidth / 2, 0, screenWidth / 2],
-    outputRange: ["-5deg", "0deg", "5deg"],
+    outputRange: ["-8deg", "0deg", "8deg"],
     extrapolate: "clamp",
   });
   const nextCardOpacity = position.x.interpolate({
-    inputRange: [-screenWidth / 2, 0, screenWidth / 2],
+    inputRange: [-screenWidth * 1/2, 0, screenWidth * 1/2],
     outputRange: [1, 0, 1],
     extrapolate: "clamp",
   });
   const nextCardScale = position.x.interpolate({
-    inputRange: [-screenWidth / 2, 0, screenWidth / 2],
-    outputRange: [1, 0.8, 1],
+    inputRange: [-screenWidth * 2/3, 0, screenWidth * 2/3],
+    outputRange: [1, 0.9, 1],
     extrapolate: "clamp",
   });
 
@@ -61,6 +65,16 @@ function CardDeck({ posts }: { posts: Post[] }) {
           </TouchableWithoutFeedback>
         </Animated.View >
       )
+    } else if (index === selectedIndex + 1) {
+      // Next Card
+      return (
+        <Animated.View key={index} style={[styles.swipeCard, {
+          opacity: nextCardOpacity,
+          transform: [{ scale: nextCardScale }]
+        }]}>
+          <Card post={post} size='large' />
+        </Animated.View>
+      );
     } else {
       // Later Cards
       return (
