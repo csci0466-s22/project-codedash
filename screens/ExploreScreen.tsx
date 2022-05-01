@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
     backgroundColor: "#121212",
   },
   text: {
