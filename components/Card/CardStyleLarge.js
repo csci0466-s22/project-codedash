@@ -49,6 +49,9 @@ const styles = StyleSheet.create({
   LikeCount: {
     color: "#ffffff",
     marginRight: 10,
+  },
+  CodeContainer: {
+    padding: 20
   }
 });
 

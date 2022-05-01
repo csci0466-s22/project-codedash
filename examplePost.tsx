@@ -9,9 +9,7 @@ const examplePosts: Post[] = [
       name: "John Doe",
       avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
     },
-    code: `import React from "react";
-  import { View, Text } from "react-native";
-  return(null);`,
+    code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
     voteCount: 10,
@@ -23,9 +21,7 @@ const examplePosts: Post[] = [
       name: "John Doe",
       avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
     },
-    code: `import React from "react";
-  import { View, Text } from "react-native";
-  return(null);`,
+    code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
     voteCount: 10,
@@ -37,9 +33,7 @@ const examplePosts: Post[] = [
       name: "John Doe",
       avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
     },
-    code: `import React from "react";
-  import { View, Text } from "react-native";
-  return(null);`,
+    code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
     voteCount: 10,
@@ -51,9 +45,7 @@ const examplePosts: Post[] = [
       name: "John Doe",
       avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
     },
-    code: `import React from "react";
-  import { View, Text } from "react-native";
-  return(null);`,
+    code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
     voteCount: 10,
@@ -65,9 +57,7 @@ const examplePosts: Post[] = [
       name: "John Doe",
       avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
     },
-    code: `import React from "react";
-  import { View, Text } from "react-native";
-  return(null);`,
+    code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
     voteCount: 10,
@@ -79,9 +69,7 @@ const examplePosts: Post[] = [
       name: "John Doe",
       avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
     },
-    code: `import React from "react";
-  import { View, Text } from "react-native";
-  return(null);`,
+    code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
     voteCount: 10,

@@ -37,10 +37,12 @@ function Card({ post, size = "large" }: CardProps) {
             null}
         </View>
       </View>
-      <Code
-        code={post.code}
-        language={post.language}
-      />
+      <View style={styles.CodeContainer}>
+        <Code
+          code={post.code}
+          language={post.language}
+        />
+      </View>
     </View>
 
   );
