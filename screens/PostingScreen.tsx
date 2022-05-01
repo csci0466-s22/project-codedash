@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 function PostingScreen({navigation}: {navigation: any}) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Posting Screen</Text>
+      <Text style={styles.text}>New Posting Screen</Text>
     </View >
   )
 }
