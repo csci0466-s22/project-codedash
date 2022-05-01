@@ -8,5 +8,4 @@ export default interface Post {
     createdAt: Date;
     voteCount: number;
     language: Language;
-
 };

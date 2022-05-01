@@ -1,16 +1,24 @@
-import { View, Text, StyleSheet, Button, Pressable } from "react-native";
-import { createStackNavigator } from '@react-navigation/stack';
-import NativeIconicIcon from '../components/NativeIconicIcon';
+import { View, Text, StyleSheet, FlatList, ListRenderItem, SafeAreaView } from "react-native";
 import Avatar from "../components/Avatar";
-import AvatarBadge from "../components/AvatarBadge";
+import Card from "../components/Card";
+import examplePosts from "../examplePost";
+import Post from "../lib/types/post";
 
-
-const Stack = createStackNavigator();
 
 function ExploreScreen({ navigation }: { navigation: any }) {
+  const data: Post[] = examplePosts;
+
+  const keyExtractor = (post: Post) => post.id;
+
+  const ItemRenderer: ListRenderItem<Post> = ({ item }) => {
+    return (
+      <Card post={item} size="small" />
+    )
+  };
+
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Explore Screen</Text>
+    <SafeAreaView style={styles.container}>
       <View style={styles.avatarContainer}>
         <Avatar
           user={{
@@ -23,7 +31,17 @@ function ExploreScreen({ navigation }: { navigation: any }) {
           clickable={true}
         />
       </View>
-    </View >
+      <Text style={styles.text}>Explore Screen</Text>
+
+      <FlatList
+        data={data}
+        numColumns={1}
+        keyExtractor={keyExtractor}
+        renderItem={ItemRenderer}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+        showsVerticalScrollIndicator={false}>
+      </FlatList>
+    </SafeAreaView >
   )
 }
 
@@ -32,17 +50,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "#211D33",
+    width: '100%',
+    backgroundColor: "#121212",
   },
   text: {
     fontSize: 30,
     color: "#fff",
+    height: 80,
+    marginTop: 20,
   },
   avatarContainer: {
     position: "absolute",
     top: 60,
     right: 20,
-  },
+  }
 });
 
 export default ExploreScreen;

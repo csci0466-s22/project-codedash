@@ -3,32 +3,14 @@ import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import Avatar from "../components/Avatar";
 import AvatarBadge from "../components/AvatarBadge";
 import Card from "../components/Card";
-
-
-const examplePost = {
-  id: "1",
-  user: {
-    id: "1",
-    name: "John Doe",
-    avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
-  },
-  code: `import React from "react";
-import { View, Text } from "react-native";
-return(null);`,
-  language: "typescript" as Language,
-  createdAt: new Date(),
-  voteCount: 10,
-};
-
-
+import CardDeck from "../components/CardDeck";
+import examplePosts from "../examplePost";
+import Post from "../lib/types/post";
 
 
 function MainScreen() {
-
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <Image
+  /**
+   * <Image
         source={require("../assets/logo-codedash.png")}
         style={{
           width: "100%",
@@ -36,6 +18,11 @@ function MainScreen() {
           resizeMode: "contain",
         }}
       />
+   */
+  
+  return (
+    <SafeAreaView style={styles.container}>
+      
       <View style={styles.badgeContainer}>
         <AvatarBadge
           user={{
@@ -46,7 +33,7 @@ function MainScreen() {
           }}
         />
       </View>
-      <Card post={examplePost} />
+      <CardDeck posts={examplePosts} />
     </SafeAreaView>
   )
 }
