@@ -18,7 +18,7 @@ function Card({ post, size = "large" }: CardProps) {
   const styles = size === "large" ? stylesLarge : stylesSmall;
 
   const onPress = () => {
-    console.log("onPress");
+    console.log("Menu button pressed");
   };
 
   return (

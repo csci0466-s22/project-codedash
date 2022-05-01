@@ -7,6 +7,7 @@ enum AvatarSize {
   small = "small",
   medium = "medium",
   large = "large",
+  xlarge = "xlarge",
 }
 
 interface AvatarProps {
@@ -41,19 +42,25 @@ function Avatar({user, size, clickable=true}: AvatarProps) {
               ? 40
               : size === AvatarSize.medium
               ? 50
-              : 60,
+              : size === AvatarSize.large
+              ? 60
+              : 100,
           height:
             size === AvatarSize.small
               ? 40
               : size === AvatarSize.medium
               ? 50
-              : 60,
+              : size === AvatarSize.large
+              ? 60
+              : 100,
           borderRadius:
             size === AvatarSize.small
               ? 20
               : size === AvatarSize.medium
               ? 25
-              : 30,
+              : size === AvatarSize.large
+              ? 30
+              : 50,
           alignItems: "center",
           justifyContent: "center",
           overflow: "hidden",

@@ -1,8 +1,5 @@
 import { View, Text, StyleSheet, FlatList, ListRenderItem, SafeAreaView } from "react-native";
-import { createStackNavigator } from '@react-navigation/stack';
-import NativeIconicIcon from '../components/NativeIconicIcon';
 import Avatar from "../components/Avatar";
-import AvatarBadge from "../components/AvatarBadge";
 import Card from "../components/Card";
 import examplePosts from "../examplePost";
 import Post from "../lib/types/post";
@@ -53,12 +50,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "#211D33",
+    backgroundColor: "#121212",
   },
   text: {
     fontSize: 30,
     color: "#fff",
     height: 80,
+    marginTop: 20,
   },
   avatarContainer: {
     position: "absolute",
