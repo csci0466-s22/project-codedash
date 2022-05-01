@@ -19,7 +19,10 @@ function Code({code, language}: CodeProps){
     Hack: require("../../assets/fonts/Hack-Regular.ttf"),
   });
 
-  const courierFont = Platform.Version >= 15 ? 'Courier New' : 'Courier';
+  const courierFont =
+    Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 15
+      ? "Courier New"
+      : "Courier";
   const platformFont = Platform.OS === "ios" ? courierFont : "monospace";
   const fontFamily = (fontsLoaded) ? "Hack" : platformFont;
 
