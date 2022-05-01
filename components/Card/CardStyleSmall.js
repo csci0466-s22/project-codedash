@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     borderColor: "#333333",
     overflow: "hidden",
     marginBottom: 30,
+    marginHorizontal: 20,
   },
   CardHeader: {
     flex: 0,

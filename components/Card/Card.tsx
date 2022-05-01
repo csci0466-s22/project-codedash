@@ -25,21 +25,25 @@ function Card({ post, size = "large" }: CardProps) {
   const spring = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
-    console.log("Card pressed in");
-    Animated.spring(spring, {
-      toValue: 0.9,
-      friction: 5,
-      useNativeDriver: true,
-    }).start();
+    // Only animate spring or small cards
+    if (size === "small") {
+      Animated.spring(spring, {
+        toValue: 0.93,
+        speed: 20,
+        useNativeDriver: true,
+      }).start();
+    }
+
   };
 
   const onPressOut = () => {
-    console.log("Card pressed out");
-    Animated.spring(spring, {
-      toValue: 1,
-      friction: 5,
-      useNativeDriver: true,
-    }).start();
+    if (size === "small") {
+      Animated.spring(spring, {
+        toValue: 1,
+        speed: 20,
+        useNativeDriver: true,
+      }).start();
+    }
   };
 
 
@@ -60,12 +64,12 @@ function Card({ post, size = "large" }: CardProps) {
               null}
           </View>
         </View>
-      <View style={styles.CodeContainer}>
-        <Code
-          code={post.code}
-          language={post.language}
-        />
-      </View>
+        <View style={styles.CodeContainer}>
+          <Code
+            code={post.code}
+            language={post.language}
+          />
+        </View>
       </Animated.View >
     </TouchableWithoutFeedback>
 

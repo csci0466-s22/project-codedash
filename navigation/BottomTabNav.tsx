@@ -21,6 +21,7 @@ function BottomTabNav() {
           borderTopWidth: 0,
         },
       }}
+      initialRouteName="MainStack"
     >
       <Tab.Screen
         name="Edit"

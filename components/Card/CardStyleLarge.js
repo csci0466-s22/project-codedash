@@ -1,8 +1,10 @@
- import { StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
 
+const cardWidth = Dimensions.get('window').width * 0.9;
 
 const styles = StyleSheet.create({
- CardContainer: {
+  CardContainer: {
     flex: 0,
     backgroundColor: "#252526",
     shadowOffset: {
@@ -14,7 +16,7 @@ const styles = StyleSheet.create({
 
     elevation: 4,
     shadowColor: "#000",
-    width: "90%",
+    width: cardWidth,
     height: 520,
     borderRadius: 10,
     borderWidth: 1,

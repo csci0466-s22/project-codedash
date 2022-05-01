@@ -3,15 +3,14 @@ import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import Avatar from "../components/Avatar";
 import AvatarBadge from "../components/AvatarBadge";
 import Card from "../components/Card";
+import CardDeck from "../components/CardDeck";
 import examplePosts from "../examplePost";
+import Post from "../lib/types/post";
 
 
 function MainScreen() {
-
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <Image
+  /**
+   * <Image
         source={require("../assets/logo-codedash.png")}
         style={{
           width: "100%",
@@ -19,6 +18,11 @@ function MainScreen() {
           resizeMode: "contain",
         }}
       />
+   */
+  
+  return (
+    <SafeAreaView style={styles.container}>
+      
       <View style={styles.badgeContainer}>
         <AvatarBadge
           user={{
@@ -29,7 +33,7 @@ function MainScreen() {
           }}
         />
       </View>
-      <Card post={examplePosts[0]} />
+      <CardDeck posts={examplePosts} />
     </SafeAreaView>
   )
 }

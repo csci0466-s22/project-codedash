@@ -12,7 +12,7 @@ const examplePosts: Post[] = [
     code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
-    voteCount: 10,
+    voteCount: 1,
   },
   {
     id: "2",
@@ -24,7 +24,7 @@ const examplePosts: Post[] = [
     code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
-    voteCount: 10,
+    voteCount: 2,
   },
   {
     id: "3",
@@ -36,7 +36,7 @@ const examplePosts: Post[] = [
     code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
-    voteCount: 10,
+    voteCount: 3,
   },
   {
     id: "4",
@@ -48,7 +48,7 @@ const examplePosts: Post[] = [
     code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
-    voteCount: 10,
+    voteCount: 4,
   },
   {
     id: "5",
@@ -60,7 +60,7 @@ const examplePosts: Post[] = [
     code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
-    voteCount: 10,
+    voteCount: 5,
   },
   {
     id: "6",
@@ -72,7 +72,7 @@ const examplePosts: Post[] = [
     code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
-    voteCount: 10,
+    voteCount: 6,
   }
 ]
 
