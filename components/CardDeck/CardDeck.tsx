@@ -4,17 +4,19 @@
  */
 
 import styles from "./CardDeckStyle";
-import { Animated, View, PanResponder} from "react-native";
+import { Animated, View, PanResponder, Platform} from "react-native";
 import { useRef, useState } from "react";
 import Post from "../../lib/types/post";
 import Card from "../Card/Card";
 import { Dimensions } from "react-native";
+import * as Haptics from 'expo-haptics';
 
 const screenWidth = Dimensions.get("window").width;
 
 function CardDeck({ posts }: { posts: Post[] }) {
   const position = useRef(new Animated.ValueXY()).current;
   const nxt_position = useRef(new Animated.ValueXY()).current;
+  const cueOpacity = useRef(new Animated.ValueXY()).current;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
 
@@ -23,9 +25,21 @@ function CardDeck({ posts }: { posts: Post[] }) {
     outputRange: ["-8deg", "0deg", "8deg"],
     extrapolate: "clamp",
   });
-  const currCardOpacity = position.x.interpolate({
+  const currCardOpacity = cueOpacity.x.interpolate({
     inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
     outputRange: [0.8, 1, 0.8],
+    extrapolate: "clamp",
+  });
+
+  const redCueOpacity = cueOpacity.x.interpolate({
+    inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
+    outputRange: [0.1, 0, 0],
+    extrapolate: "clamp",
+  });
+
+  const greenCueOpacity = cueOpacity.x.interpolate({
+    inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
+    outputRange: [0, 0, 0.1],
     extrapolate: "clamp",
   });
   
@@ -34,7 +48,6 @@ function CardDeck({ posts }: { posts: Post[] }) {
     outputRange: [1, 0.9, 1],
     extrapolate: "clamp",
   });
-
 
   const nxt_translateX = nxt_position.x.interpolate({
     inputRange: [-screenWidth / 2, 0, screenWidth / 2],
@@ -71,6 +84,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
   }
 
   const currCard = () => {
+    let tapped = false;
 
     return (
       <Animated.View key={posts[selectedIndex].id} style={[styles.swipeCard, {
@@ -82,8 +96,23 @@ function CardDeck({ posts }: { posts: Post[] }) {
           onPanResponderMove: (evt, gestureState) => {
             position.setValue({ x: gestureState.dx, y: gestureState.dy });
             nxt_position.setValue({ x: gestureState.dx, y: gestureState.dy });
+            cueOpacity.setValue({ x: gestureState.dx, y: gestureState.dy });
+            
+            if (Math.abs(gestureState.dx) > 120 && !tapped) {
+              if (Platform.OS === "android") {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              } else {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              }
+              tapped = true;
+            } else if (Math.abs(gestureState.dx) < 120 && tapped) {
+              tapped = false;
+            }
           },
           onPanResponderRelease: (evt, gestureState) => {
+            cueOpacity.setValue({ x: 0, y: 0 });
+
+            tapped = false;
 
             //swipe animation if sufficent swipe magnitude
             if (Math.abs(gestureState.dx) > 120) {
@@ -154,6 +183,18 @@ function CardDeck({ posts }: { posts: Post[] }) {
 
   return (
     <View style={styles.container}>
+      <Animated.View
+        style={[styles.redCue, {
+          opacity: redCueOpacity,
+        }]}
+        pointerEvents={"box-none"}
+      />
+      <Animated.View
+        style={[styles.greenCue, {
+          opacity: greenCueOpacity,
+        }]}
+        pointerEvents={"box-none"}
+      />
       {cards}
     </View>
   );
