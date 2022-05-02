@@ -4,42 +4,59 @@
  */
 
 import styles from "./CardDeckStyle";
-import { Animated, View, PanResponder, Text } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { Animated, View, PanResponder} from "react-native";
+import { useRef, useState } from "react";
 import Post from "../../lib/types/post";
 import Card from "../Card/Card";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Dimensions } from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
 
 function CardDeck({ posts }: { posts: Post[] }) {
   const position = useRef(new Animated.ValueXY()).current;
+  const nxt_position = useRef(new Animated.ValueXY()).current;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-
-  useEffect(() => {
-    // Refill the deck
-    if (selectedIndex === posts.length) {
-      setSelectedIndex(0);
-    }
-  }, [selectedIndex]);
 
   const rotation = position.x.interpolate({
     inputRange: [-screenWidth / 2, 0, screenWidth / 2],
     outputRange: ["-8deg", "0deg", "8deg"],
     extrapolate: "clamp",
   });
-  const nextCardOpacity = position.x.interpolate({
+  const currCardOpacity = position.x.interpolate({
     inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
-    outputRange: [1, 0, 1],
+    outputRange: [0.8, 1, 0.8],
     extrapolate: "clamp",
   });
+  
   const nextCardScale = position.x.interpolate({
     inputRange: [-screenWidth * 2 / 3, 0, screenWidth * 2 / 3],
     outputRange: [1, 0.9, 1],
     extrapolate: "clamp",
   });
+
+
+  const nxt_translateX = nxt_position.x.interpolate({
+    inputRange: [-screenWidth / 2, 0, screenWidth / 2],
+    outputRange: [-screenWidth / 20, 0, screenWidth / 20],
+    extrapolate: "clamp",
+  });
+
+  const nxt_translateY = nxt_position.y.interpolate({
+    inputRange: [-screenWidth / 2, 0, screenWidth / 2],
+    outputRange: [-screenWidth / 20, 0, screenWidth / 20],
+    extrapolate: "clamp",
+  });
+
+
+
+  const nxt_rotate = nxt_position.x.interpolate({
+    inputRange: [-screenWidth / 2, 0, screenWidth / 2],
+    outputRange: ["-3deg", "0deg", "3deg"],
+    extrapolate: "clamp",
+  });
+
+
 
   const swipeHander = (direction: String) => {
     if (direction === "right") {
@@ -49,77 +66,91 @@ function CardDeck({ posts }: { posts: Post[] }) {
     }
   }
 
-  const cards = posts.map((post, index) => {
-    if (index < selectedIndex) {
-      return null;
-    } else if (index === selectedIndex) {
-      // Current Card
-      return (
-        <Animated.View key={index} style={[styles.swipeCard, {
-          transform: [{ rotate: rotation }, ...position.getTranslateTransform()]
-        }]}
-          {...PanResponder.create({
-            onMoveShouldSetPanResponder: () => true,
-            onPanResponderMove: (evt, gestureState) => {
-              position.setValue({ x: gestureState.dx, y: gestureState.dy });
-            },
-            onPanResponderRelease: (evt, gestureState) => {
-              if (gestureState.dx > 120) {
-                Animated.timing(position, {
-                  toValue: { x: screenWidth + 100, y: gestureState.dy },
-                  duration: 300,
-                  useNativeDriver: true,
-                }).start(( finished ) => {
-                  console.log("right");
-                  if (finished) setSelectedIndex(selectedIndex + 1);
+  const getNextCardIndex = (currIndex: number) => {
+    return (currIndex === posts.length - 1) ? 0 : currIndex + 1;
+  }
+
+  const currCard = () => {
+
+    return (
+      <Animated.View key={posts[selectedIndex].id} style={[styles.swipeCard, {
+        transform: [{ rotate: rotation }, ...position.getTranslateTransform()],
+        opacity: currCardOpacity
+      }]}
+        {...PanResponder.create({
+          onStartShouldSetPanResponder: () => true,
+          onPanResponderMove: (evt, gestureState) => {
+            position.setValue({ x: gestureState.dx, y: gestureState.dy });
+            nxt_position.setValue({ x: gestureState.dx, y: gestureState.dy });
+          },
+          onPanResponderRelease: (evt, gestureState) => {
+
+            //swipe animation if sufficent swipe magnitude
+            if (Math.abs(gestureState.dx) > 120) {
+
+              const sign = Math.sign(gestureState.dx);
+              const direction = sign > 0 ? "right" : "left";
+              const magnitude = 10 - Math.floor(4 * (Math.abs(gestureState.dx) - 120) / 180);
+
+
+              // Wiggle back!
+              Animated.spring(nxt_position, {
+                toValue: { x: 0, y: 0 },
+                friction: 5,
+                tension: 80,
+                useNativeDriver: true,
+              }).start((finished) => {
+                if (finished) nxt_position.setValue({ x: 0, y: 0 });
+              });
+              // Fly away!
+              Animated.timing(position, {
+                toValue: { x: sign * (screenWidth + 100), y: gestureState.dy },
+                duration: 500,
+                useNativeDriver: true,
+              }).start((finished) => {
+                //callback to move curr card to the next index
+                if (finished) {
+                  swipeHander(direction);
+                  setSelectedIndex(getNextCardIndex(selectedIndex))
                   position.setValue({ x: 0, y: 0 });
-                });
-              } else if (gestureState.dx < -120) {
-                Animated.timing(position, {
-                  toValue: { x: -screenWidth - 100, y: gestureState.dy },
-                  duration: 300,
-                  useNativeDriver: true,
-                }).start(() => {
-                  swipeHander('left');
-                  setSelectedIndex(selectedIndex + 1);
-                  position.setValue({ x: 0, y: 0 });
-                });
-              } else {
-                Animated.spring(position, {
-                  toValue: { x: 0, y: 0 },
-                  friction: 5,
-                  useNativeDriver: true,
-                }).start();
-              }
+                }
+              });
+            } else {
+              // wiggle aborted, back to starting position
+              Animated.spring(position, {
+                toValue: { x: 0, y: 0 },
+                friction: 5,
+                useNativeDriver: true,
+              }).start();
             }
-          }).panHandlers}
-        >
-          <TouchableWithoutFeedback>
-            <Card post={post} size='large' />
-          </TouchableWithoutFeedback>
-        </Animated.View >
-      )
-    } else if (index === selectedIndex + 1) {
-      // Next Card
-      return (
-        <Animated.View key={index} style={[styles.swipeCard, {
-          opacity: nextCardOpacity,
-          transform: [{ scale: nextCardScale }]
-        }]}>
-          <Card post={post} size='large' />
-        </Animated.View>
-      );
-    } else if (index > selectedIndex + 1) {
-      // Later Cards
-      return (
-        <Animated.View key={index} style={[styles.swipeCard, {
-          opacity: 0
-        }]}>
-          <Card post={post} size='large' />
-        </Animated.View>
-      );
-    }
-  }).reverse();
+          }
+        }).panHandlers}
+      >
+        <Card post={posts[selectedIndex]} size='large' />
+      </Animated.View >
+    );
+  };
+
+  const nextCard = () => {
+    return (
+      <Animated.View key={posts[getNextCardIndex(selectedIndex)].id} style={[styles.swipeCard, {
+        opacity: 1,
+        transform: [
+          { translateX: nxt_translateX },
+          { translateY: nxt_translateY },
+          { rotate: nxt_rotate },
+          { scale: nextCardScale }]
+      }]}>
+        <Card post={posts[getNextCardIndex(selectedIndex)]} size='large' />
+      </Animated.View>
+    );
+  };
+
+
+  const cards = [
+    nextCard(),
+    currCard()
+  ];
 
   return (
     <View style={styles.container}>

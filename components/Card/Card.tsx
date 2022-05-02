@@ -6,7 +6,7 @@ import Code from "../Code";
 import Post from "../../lib/types/post";
 import Avatar from "../Avatar";
 import NativeIconicIcon from "../NativeIconicIcon";
-import { useRef } from "react";
+import React, { ReactFragment, useRef } from "react";
 
 
 interface CardProps {
@@ -46,9 +46,15 @@ function Card({ post, size = "large" }: CardProps) {
     }
   };
 
+  // Touchable container
+  function TC({ size, children }: { size: string, children: React.ReactChild }) {
+    return (size === "small") ? <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut} >{children}</TouchableWithoutFeedback> : <>{children}</>;
+
+  };
+
 
   return (
-    <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut} >
+    <TC size={size}>
       <Animated.View style={[styles.CardContainer, { transform: [{ scale: spring }] }]}>
         <View style={styles.CardHeader}>
           {size === "large" ?
@@ -64,15 +70,14 @@ function Card({ post, size = "large" }: CardProps) {
               null}
           </View>
         </View>
-        <View style={styles.CodeContainer}>
-          <Code
-            code={post.code}
-            language={post.language}
-          />
-        </View>
+          <View style={styles.CodeContainer}>
+            <Code
+              code={post.code}
+              language={post.language}
+            />
+          </View>
       </Animated.View >
-    </TouchableWithoutFeedback>
-
+    </TC>
   );
 }
 
