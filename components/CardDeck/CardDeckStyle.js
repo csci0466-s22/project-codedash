@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   redCue: {
     position: "absolute",
     top: -375,
-    left: -800,
+    left: -900,
     width: 800,
     height: 800,
     borderRadius: 400,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   greenCue: {
     position: "absolute",
     top: -375,
-    left: 0,
+    left: 100,
     width: 800,
     height: 800,
     borderRadius: 400,

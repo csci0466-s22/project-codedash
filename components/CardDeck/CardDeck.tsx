@@ -16,6 +16,7 @@ const screenWidth = Dimensions.get("window").width;
 function CardDeck({ posts }: { posts: Post[] }) {
   const position = useRef(new Animated.ValueXY()).current;
   const nxt_position = useRef(new Animated.ValueXY()).current;
+  const cueOpacity = useRef(new Animated.ValueXY()).current;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
 
@@ -24,21 +25,21 @@ function CardDeck({ posts }: { posts: Post[] }) {
     outputRange: ["-8deg", "0deg", "8deg"],
     extrapolate: "clamp",
   });
-  const currCardOpacity = position.x.interpolate({
+  const currCardOpacity = cueOpacity.x.interpolate({
     inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
     outputRange: [0.8, 1, 0.8],
     extrapolate: "clamp",
   });
 
-  const redCueOpacity = position.x.interpolate({
+  const redCueOpacity = cueOpacity.x.interpolate({
     inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
-    outputRange: [0.05, 0, 0],
+    outputRange: [0.1, 0, 0],
     extrapolate: "clamp",
   });
 
-  const greenCueOpacity = position.x.interpolate({
+  const greenCueOpacity = cueOpacity.x.interpolate({
     inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
-    outputRange: [0, 0, 0.05],
+    outputRange: [0, 0, 0.1],
     extrapolate: "clamp",
   });
   
@@ -95,15 +96,18 @@ function CardDeck({ posts }: { posts: Post[] }) {
           onPanResponderMove: (evt, gestureState) => {
             position.setValue({ x: gestureState.dx, y: gestureState.dy });
             nxt_position.setValue({ x: gestureState.dx, y: gestureState.dy });
+            cueOpacity.setValue({ x: gestureState.dx, y: gestureState.dy });
             
             if (Math.abs(gestureState.dx) > 120 && !tapped) {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               tapped = true;
             } else if (Math.abs(gestureState.dx) < 120 && tapped) {
               tapped = false;
             }
           },
           onPanResponderRelease: (evt, gestureState) => {
+            cueOpacity.setValue({ x: 0, y: 0 });
+
             tapped = false;
 
             //swipe animation if sufficent swipe magnitude
