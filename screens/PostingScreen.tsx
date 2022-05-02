@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, ScrollView, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useState, useEffect } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
@@ -6,18 +6,8 @@ import KeyboardToolbar from "../components/KeyboardToolbar/KeyboardToolbar";
 
 const codeWindowPadding = 20;
 
-function PostingScreen({ navigation }: { navigation: any }) {
-  const [textContent, changeContent] = useState('');
-  const [language, changeLanguage] = useState('python');
-  return (
-    <View style={styles.wrapper}>
-      <View style={styles.toolbarView}>
-        <KeyboardToolbar />
-      </View>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
-        <View style={styles.container}>
-          <Text style={styles.text}>Create a new post!</Text>
-          <View style={styles.inputContainer}>
+/*
+
             <View style={styles.overlay}>
               <Code code={textContent} language={language as Language} />
             </View>
@@ -32,6 +22,67 @@ function PostingScreen({ navigation }: { navigation: any }) {
               value={textContent}
               onChangeText={text => changeContent(text)}
             />
+
+*/
+
+function PostingScreen({ navigation }: { navigation: any }) {
+  const [textContent, changeContent] = useState('');
+  const [language, changeLanguage] = useState('python');
+  return (
+    <View style={styles.wrapper}>
+      <View style={styles.toolbarView}>
+        <KeyboardToolbar />
+      </View>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
+        <View style={styles.container}>
+          <Text style={styles.text}>Create a new post!</Text>
+          <View style={styles.inputContainer}>
+            <ScrollView style={styles.overlay}>
+              <Text>
+                adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+                {'\n'}adlqkmwkqweqwe
+              </Text>
+            </ScrollView>
+            
           </View>
         </View >
       </TouchableWithoutFeedback>
@@ -41,7 +92,6 @@ function PostingScreen({ navigation }: { navigation: any }) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: 'rgba(50, 50, 50, 0)',
     height: "100%"
   },
   container: {
@@ -77,14 +127,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     lineHeight: 17, // value to align with overlay
-    color: 'transparent'
+    //color: 'transparent'
   },
   overlay: {
     padding: codeWindowPadding,
     width: "100%",
     height: "100%",
     backgroundColor: "#252526",
-    position: "absolute"
+    position: "absolute",
   },
   toolbarView: {
     zIndex: 2

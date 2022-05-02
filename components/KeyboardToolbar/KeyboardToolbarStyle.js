@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { absoluteFill } from "react-native-extended-stylesheet";
 
 const styles = StyleSheet.create({
     avoidView: {
