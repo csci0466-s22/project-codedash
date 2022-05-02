@@ -3,9 +3,10 @@ import Avatar from "../components/Avatar";
 import Card from "../components/Card";
 import examplePosts from "../examplePost";
 import Post from "../lib/types/post";
+import SearchBar from "react-native-dynamic-search-bar";
 
 
-function ExploreScreen({ navigation }: { navigation: any }) {
+function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
   const data: Post[] = examplePosts;
 
   const keyExtractor = (post: Post) => post.id;
@@ -22,8 +23,8 @@ function ExploreScreen({ navigation }: { navigation: any }) {
       <View style={styles.avatarContainer}>
         <Avatar
           user={{
-            id: "124",
-            name: "Wayne",
+            id: "9",
+            name: "WayneWang",
             avatar:
               "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
           }}
@@ -31,7 +32,8 @@ function ExploreScreen({ navigation }: { navigation: any }) {
           clickable={true}
         />
       </View>
-      <Text style={styles.text}>Explore Screen</Text>
+      <Text style={styles.text}>Explore</Text>
+      <SearchBar style={styles.SearchBar} darkMode={true}/>
 
       <FlatList
         data={data}
@@ -63,6 +65,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 60,
     right: 20,
+  },
+  SearchBar: {
+    marginBottom: 30,
+    backgroundColor: "#343434",
   }
 });
 

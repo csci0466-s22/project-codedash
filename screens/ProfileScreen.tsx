@@ -4,10 +4,13 @@ import Avatar from "../components/Avatar";
 import Card from "../components/Card";
 import examplePosts from "../examplePost";
 import Post from "../lib/types/post";
+import User from "../lib/types/user";
+import useUserById from "../lib/hooks/useUserById";
 
 
-function ProfileScreen({ navigation }: { navigation: any }) {
-  const data: Post[] = examplePosts;
+function ProfileScreen({ route, navigation}: { route: any, navigation: any}) {
+  const data: Post[] = examplePosts.filter(post => post.user.id === route.params.id);
+  const user = useUserById(route.params.id);
 
   const keyExtractor = (post: Post) => post.id;
 
@@ -27,8 +30,8 @@ function ProfileScreen({ navigation }: { navigation: any }) {
       <View style={styles.personalInfoContainer}>
         <Avatar
           user={{
-            id: "124",
-            name: "Wayne",
+            id: user?.id,
+            name: user?.name,
             avatar:
               "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
           }}
@@ -36,7 +39,7 @@ function ProfileScreen({ navigation }: { navigation: any }) {
           clickable={false}
         />
         <View style={styles.personalInfo}>
-          <Text style={styles.username}>@Wayne</Text>
+          <Text style={styles.username}>@{user.name}</Text>
           <Text style={styles.followers}>30k followers</Text>
           <Text style={styles.replies}>10k replies</Text>
         </View>
