@@ -9,11 +9,19 @@ const codeWindowPadding = 20;
 function PostingScreen({ navigation }: { navigation: any }) {
   const [textContent, changeContent] = useState('');
   const [language, changeLanguage] = useState('python');
-  const maxLines = 20;
+  const maxLines = 18;
+  // removed ability to click outside to close keyboard
+  // replace with button to close keyboard with Keyboard.dismiss()
+
+  const toolBarCallBack = (buttonContnet: string) => {
+    changeContent(textContent + buttonContnet);
+  };
+
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.toolbarView}>
-        <KeyboardToolbar />
+        <KeyboardToolbar callback={toolBarCallBack}/>
       </View>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -28,6 +36,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
               multiline={true}
               autoCorrect={false}
               autoCapitalize="none"
+              importantForAutofill="no"
               textAlignVertical="top"
               style={styles.input}
               value={textContent}
