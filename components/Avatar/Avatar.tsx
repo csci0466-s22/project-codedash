@@ -1,6 +1,7 @@
 import { Dimensions, Image, TouchableOpacity } from "react-native"; 
 import { useLinkProps } from "@react-navigation/native";
 import User from "../../lib/types/user.js";
+import { useMemo } from "react";
 
 
 enum AvatarSize {
@@ -23,14 +24,32 @@ function Avatar({user, size, clickable=true}: AvatarProps) {
     const {onPress} = (clickable) ? useLinkProps({to}): {onPress: () => {}};
 
 
-    console.table(user);
-
     if (!user || !user.id || !user.avatar) {
       //return loading indicator
       return <></>;
     }
-
-
+    
+    const prefetch = useMemo(() => {
+      return (
+        <Image
+          source={{
+            uri: `https://avatars.dicebear.com/api/initials/${user.name}.png`,
+            //"https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
+          }}
+          style={{
+            width: "100%",
+            height: "100%",
+            resizeMode: "cover",
+            borderWidth: 2,
+            borderColor: "#fff",
+            borderRadius:
+              Math.round(
+                Dimensions.get("window").width + Dimensions.get("window").height
+              ) / 2,
+          }}
+        />
+      );
+    }, [user?.id]);
 
     return (
       <TouchableOpacity
@@ -66,22 +85,7 @@ function Avatar({user, size, clickable=true}: AvatarProps) {
           overflow: "hidden",
         }}
       >
-        <Image
-          source={{
-            uri: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-          }}
-          style={{
-            width: "100%",
-            height: "100%",
-            resizeMode: "cover",
-            borderWidth: 2,
-            borderColor: "#fff",
-            borderRadius:
-              Math.round(
-                Dimensions.get("window").width + Dimensions.get("window").height
-              ) / 2,
-          }}
-        ></Image>
+        {prefetch}
       </TouchableOpacity>
     );
 

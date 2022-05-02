@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
  swipeCard: {
     position: "absolute",
     top: -240,
-    left: -175,
+    left: -172,
   },
 });
 

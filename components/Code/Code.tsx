@@ -15,16 +15,14 @@ interface CodeProps {
 
 function Code({code, language}: CodeProps){
 
-  let [fontsLoaded] = useFonts({
-    Hack: require("../../assets/fonts/Hack-Regular.ttf"),
-  });
 
   const courierFont =
     Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 15
       ? "Courier New"
       : "Courier";
   const platformFont = Platform.OS === "ios" ? courierFont : "monospace";
-  const fontFamily = (fontsLoaded) ? "Hack" : platformFont;
+  const fontFamily =  "Hack";
+
 
   return (
     <View style={styles.container}>
