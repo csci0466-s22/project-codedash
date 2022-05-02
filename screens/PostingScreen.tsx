@@ -18,6 +18,13 @@ function PostingScreen({ navigation }: { navigation: any }) {
     changeContent(textContent + buttonContnet);
   };
 
+  const onPostPress = () => {
+    changeContent('');
+    navigation.navigate('MainStack', {
+    });
+  };
+
+
 
   return (
     <View style={styles.wrapper}>
@@ -27,7 +34,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <View style={styles.postButtonContainer}>
-            <PostButton onPress={() => console.log("post pressed")} />
+            <PostButton onPress={() => onPostPress()} />
           </View>
           <Text style={styles.text}>Create a new post!</Text>
           <View style={styles.inputContainer}>
@@ -62,13 +69,13 @@ function PostingScreen({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   wrapper: {
     height: "100%",
-    backgroundColor: "#211D33"
+    backgroundColor: "#121212",
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10
+    paddingHorizontal: 20
   },
   text: {
     fontSize: 20,
@@ -79,8 +86,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: "100%",
     height: "70%",
-    borderBottomColor: '#000000',
-    borderBottomWidth: 1
   },
   input: {
     // Must keep separate, somehow the padding settings does not work
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     lineHeight: 17, // value to align with overlay
-    color: 'transparent'
+    color: 'transparent',
   },
   overlay: {
     padding: codeWindowPadding,
@@ -98,7 +103,8 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#252526",
     position: "absolute",
-    overflow: "hidden"
+    overflow: "hidden",
+    borderRadius: 10,
   },
   toolbarView: {
     zIndex: 2
