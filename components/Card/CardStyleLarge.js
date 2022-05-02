@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
     elevation: 4,
     shadowColor: "#000",
+    
     width: "85%",
     height: 520,
     borderRadius: 10,

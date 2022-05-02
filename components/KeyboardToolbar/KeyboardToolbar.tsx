@@ -1,44 +1,39 @@
 import styles from "./KeyboardToolbarStyle";
-import { View, Text, Keyboard, Dimensions, KeyboardAvoidingView, Button } from 'react-native';
+import { View, Text, Keyboard, Dimensions, KeyboardAvoidingView, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react';
-import { TouchableOpacity } from "react-native-gesture-handler";
+import useKeyboardOpen from "../../lib/hooks/useKeyboardOpen";
+import useKeyboardHeight from "../../lib/hooks/useKeyboardHeight";
+import Highlight from "prism-react-renderer";
+import theme from "prism-react-renderer/themes/okaidia";
+
+
+//TODO: add coloring for the buttons
+
+
 
 const windowHeight = Dimensions.get('window').height;
 function KeyboardMenu({ callback }: { callback: (buttonContent: string) => void }) {
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-  let barContent = null
+  const keyboardVisible = useKeyboardOpen();
+  const keyboardHeight = useKeyboardHeight();
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow', (e) => {
-        setKeyboardVisible(true);
-        setKeyboardHeight(e.endCoordinates.height);
-      });
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide', () => {
-        setKeyboardVisible(false);
-        setKeyboardHeight(0);
-      });
 
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    }
-  }, []);
+
+  //let's grab the highlight color
+
 
   const generateButton = (buttonContent: string, index: number) => {
     return (
-      <View key={index} style={styles.buttonContainer}>
-        <TouchableOpacity
+      <TouchableOpacity 
+          key={index}
           style={styles.button}
-          onPress={() => callback(buttonContent)}
+          onPress={() => {
+            console.log(buttonContent);
+            callback(buttonContent);
+          }}
         >
           <Text style={styles.buttonText}>{buttonContent}</Text>
-        </TouchableOpacity>
-      </View>
-
-    )
+      </TouchableOpacity>
+    );
   };
 
   const buttonContents = [
@@ -50,25 +45,39 @@ function KeyboardMenu({ callback }: { callback: (buttonContent: string) => void 
     'return',
     'for',
     'if',
-    'else'
+    'else',
+    'lambda(x)',
+    "test1",
+    "test2",
+    "test3",
+    "test4",
+    "test5",
   ];
 
-  if (keyboardHeight == 0) {
-    barContent = null
-  } else {
-    barContent = <View style={[styles.bar, { top: windowHeight - keyboardHeight - 50 }]}>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => callback('    ')} >
-          <Text style={styles.buttonText}>Tab</Text>
-        </TouchableOpacity>
-      </View>
-      {buttonContents.map((buttonContent, index) => generateButton(buttonContent, index))}
-    </View>
-  }
+  //const height = (!keyboardVisible) ? 50 : 0;
+  const top = (!keyboardVisible) ? 0 : windowHeight - keyboardHeight - 50;
 
-  return <View style={styles.avoidView}>
-    {barContent}
-  </View>;
+
+  const barContent = (
+    <ScrollView
+      pointerEvents="box-none"
+      keyboardShouldPersistTaps="handled"
+      style={[styles.bar, { top: top}]}
+      contentContainerStyle={styles.barContent}
+      horizontal={true}
+      alwaysBounceHorizontal
+    >
+      {buttonContents.map((buttonContent, index) =>
+        generateButton(buttonContent, index)
+      )}
+    </ScrollView>
+  );
+
+  return(
+    <>
+      {(keyboardVisible) ? barContent : null}
+    </>
+  );
 }
 
 
