@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PostingScreen from '../screens/PostingScreen';
 import MainStack from './MainStack';
-import ExploreScreen from '../screens/ExploreScreen';
 
 import NativeIconicIcon from '../components/NativeIconicIcon';
 import ExploreStack from './ExploreStack';
@@ -20,6 +19,7 @@ function BottomTabNav() {
           backgroundColor: "#1C1C17",
           borderTopWidth: 0,
         },
+        tabBarShowLabel: false,
       }}
       initialRouteName="MainStack"
     >

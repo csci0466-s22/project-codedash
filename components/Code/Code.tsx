@@ -1,6 +1,6 @@
 import styles from './CodeStyle';
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
-import {View, Text, Platform} from 'react-native';
+import { View, Text, Platform } from 'react-native';
 //import theme from "prism-react-renderer/themes/nightOwl";
 import theme from "prism-react-renderer/themes/okaidia";
 import { useFonts } from 'expo-font';
@@ -10,10 +10,11 @@ import { useFonts } from 'expo-font';
 interface CodeProps {
   code: string;
   language: Language;
+  inEditor: boolean;
 };
 
 
-function Code({code, language}: CodeProps){
+function Code({ code, language, inEditor = false }: CodeProps) {
 
 
   const courierFont =
@@ -21,42 +22,72 @@ function Code({code, language}: CodeProps){
       ? "Courier New"
       : "Courier";
   const platformFont = Platform.OS === "ios" ? courierFont : "monospace";
-  const fontFamily =  "Hack";
+  const fontFamily = "Hack";
 
+  if (inEditor) {
+    return (
+      <View style={styles.container}>
+        <Highlight {...defaultProps} theme={theme} code={code} language={language}>
+          {({ style, tokens, getLineProps, getTokenProps }) => (
+            <View style={[styles.container, style, { backgroundColor: "transparent" }]}>
+              {tokens.map((line, i) => {
+                return <View key={i} {...getLineProps({ line, key: i, style: styles.row }).style}>
+                  {line.map((token, key) => {
+                    const props = getTokenProps({ token, key });
+                    if (token.empty) {
+                      return <Text key={props.key} style={{ color: "#252526" } as any}>
+                        O.O
+                      </Text>
+                    } else {
+                      return (
+                        <Text key={props.key} style={{ color: props.style?.color ?? "#fff" } as any}>
+                          {props.children}
+                        </Text>
+                      );
+                    }
+                  })}
+                </View>;
+              })}
+            </View>
+          )}
+        </Highlight>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Highlight {...defaultProps} theme={theme} code={code} language={language}>
+          {({ style, tokens, getLineProps, getTokenProps }) => (
+            <View style={[styles.container, style, { backgroundColor: "transparent" }]}>
+              {tokens.map((line, i) => (
+                <View key={i} {...getLineProps({ line, key: i, style: styles.row }).style}>
+                  {line.map((token, key) => {
+                    const props = getTokenProps({ token, key });
+                    return (
+                      <Text
+                        key={props.key}
+                        style={
+                          {
+                            color: props.style?.color ?? "#fff",
+                            fontFamily: fontFamily,
+                            fontSize: 14,
+                            fontWeight: props.style?.fontWeight ?? "normal",
+                          } as any
+                        }
+                      >
+                        {props.children}
+                      </Text>
+                    );
+                  })}
+                </View>
+              ))}
+            </View>
+          )}
+        </Highlight>
+      </View>
 
-  return (
-    <View style={styles.container}>
-      <Highlight {...defaultProps} theme={theme} code={code} language={language}>
-        {({ style, tokens, getLineProps, getTokenProps }) => (
-          <View style={[styles.container, style, {backgroundColor: "transparent"}]}>
-            {tokens.map((line, i) => (
-              <View key={i} {...getLineProps({ line, key: i, style: styles.row }).style}>
-                {line.map((token, key) => {
-                  const props = getTokenProps({ token, key });
-                  return (
-                    <Text
-                      key={props.key}
-                      style={
-                        {
-                          color: props.style?.color ?? "#fff",
-                          fontFamily: fontFamily,
-                          fontSize: 12,
-                          fontWeight: props.style?.fontWeight ?? "normal",
-                        } as any
-                      }
-                    >
-                      {props.children}
-                    </Text>
-                  );
-                })}
-              </View>
-            ))}
-          </View>
-        )}
-      </Highlight>
-    </View>
-  );
-  
+    )
+  }
 }
 
 
