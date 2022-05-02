@@ -56,7 +56,7 @@ const examplePosts: Post[] = [
     id: "5",
     user: {
       id: "5",
-      name: "TrenBlack",
+      name: "CliffYang",
       avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
     },
     code: `#eu .country {\n  border: none;\n}`,
