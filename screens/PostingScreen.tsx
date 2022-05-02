@@ -1,61 +1,48 @@
-import { View, ScrollView, SafeAreaView, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
-import { useState, useEffect, useRef } from 'react';
+import { View, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView } from "react-native";
+import { useState, useEffect } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
 import KeyboardToolbar from "../components/KeyboardToolbar/KeyboardToolbar";
 
 const codeWindowPadding = 20;
 
-/*
-
-            <View style={styles.overlay}>
-              <Code code={textContent} language={language as Language} />
-            </View>
-            <TextInput
-              editable
-              maxLength={9999}
-              multiline={true}
-              autoCorrect={false}
-              autoCapitalize="none"
-              textAlignVertical="top"
-              style={styles.input}
-              value={textContent}
-              onChangeText={text => changeContent(text)}
-            />
-
-*/
-
 function PostingScreen({ navigation }: { navigation: any }) {
   const [textContent, changeContent] = useState('');
   const [language, changeLanguage] = useState('python');
-  const scrollViewRef = useRef();
-  // removed ability to click outside to close keyboard
-  // replace with button to close keyboard with Keyboard.dismiss()
+  const maxLines = 20;
   return (
     <View style={styles.wrapper}>
       <View style={styles.toolbarView}>
         <KeyboardToolbar />
       </View>
-        <View style={styles.container}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
           <Text style={styles.text}>Create a new post!</Text>
           <View style={styles.inputContainer}>
-            <ScrollView 
-              style={styles.overlay}>
+            <View style={styles.overlay}>
               <Code code={textContent} language={language as Language} />
-            </ScrollView>
+            </View>
             <TextInput
               editable
-              maxLength={9999}
+              maxLength={1250}
               multiline={true}
               autoCorrect={false}
               autoCapitalize="none"
               textAlignVertical="top"
               style={styles.input}
               value={textContent}
-              onChangeText={text => changeContent(text)}
+              onChangeText={text => {
+                const lines = text.split('\n');
+                if (lines.length > maxLines) {
+                  text = lines.slice(0, maxLines).join('\n');
+                }
+                changeContent(text);
+              }}
             />
+
           </View>
-        </View >
+        </KeyboardAvoidingView >
+      </TouchableWithoutFeedback>
     </View>
   )
 }
@@ -71,21 +58,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#211D33",
     padding: 10
   },
-  button: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-    padding: 10,
-    borderRadius: 5,
-  },
   text: {
     fontSize: 30,
     color: "#fff",
-    paddingBottom: 20
+    paddingBottom: 20,
+    marginTop: 0
   },
   inputContainer: {
     width: "100%",
-    height: "60%",
+    height: "70%",
     borderBottomColor: '#000000',
     borderBottomWidth: 1
   },
@@ -94,11 +75,10 @@ const styles = StyleSheet.create({
     paddingTop: codeWindowPadding,
     paddingLeft: codeWindowPadding,
     paddingRight: codeWindowPadding,
-    paddingBottom: codeWindowPadding,
     width: "100%",
     height: "100%",
     lineHeight: 17, // value to align with overlay
-    //color: 'transparent'
+    color: 'transparent'
   },
   overlay: {
     padding: codeWindowPadding,
@@ -106,6 +86,7 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#252526",
     position: "absolute",
+    overflow: "hidden"
   },
   toolbarView: {
     zIndex: 2
