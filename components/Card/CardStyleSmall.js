@@ -33,6 +33,16 @@ const styles = StyleSheet.create({
   AvatarBadge: {
     marginTop: 50,
   },
+  CardHeaderLeft: {
+    flex: 0,
+    flexDirection: "row",
+    alignItems: 'center',
+  },
+  userName: {
+    fontSize: 15,
+    color: "#ffffff",
+    marginLeft: 10,
+  },
   CardHeaderRight: {
     flex: 0,
     flexDirection: "row",
@@ -43,6 +53,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginRight: 20,
     color: '#ffffff',
+    justifyContent: 'flex-end'
   },
   CodeContainer: {
     padding: 20
