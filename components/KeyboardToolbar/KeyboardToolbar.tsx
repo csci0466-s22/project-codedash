@@ -1,20 +1,22 @@
 import styles from "./KeyboardToolbarStyle";
-import { View, Text, Keyboard, KeyboardAvoidingView, ViewPagerAndroidBase } from 'react-native';
+import { View, Text, Keyboard, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { useState, useEffect } from 'react';
 
-
+const windowHeight = Dimensions.get('window').height;
 function KeyboardMenu() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   let barContent = null
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow', () => {
+      'keyboardDidShow', (e) => {
         setKeyboardVisible(true);
-
+        setKeyboardHeight(e.endCoordinates.height);
       });
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide', () => {
         setKeyboardVisible(false);
+        setKeyboardHeight(0);
       });
 
     return () => {
@@ -23,19 +25,17 @@ function KeyboardMenu() {
     }
   }, []);
 
-  if (keyboardVisible) {
-    barContent = <View style={styles.bar}>
-      <Text>tab</Text>
-    </View>;
+  if (keyboardHeight == 0) {
+    barContent = null
   } else {
-    barContent = null;
+    barContent = <View style={[styles.bar, {top: windowHeight - keyboardHeight-50}]}>
+      <Text>tab</Text>
+    </View>
   }
 
-  return <KeyboardAvoidingView style={styles.avoidView}
-    behavior='position'
-  >
+  return <View style={styles.avoidView}>
     {barContent}
-  </KeyboardAvoidingView>;
+  </View>;
 }
 
 
