@@ -1,8 +1,9 @@
-import { View, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView } from "react-native";
+import { View, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, SafeAreaView } from "react-native";
 import { useState, useEffect } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
 import KeyboardToolbar from "../components/KeyboardToolbar/KeyboardToolbar";
+import PostButton from "../components/PostButton";
 
 const codeWindowPadding = 20;
 
@@ -21,10 +22,13 @@ function PostingScreen({ navigation }: { navigation: any }) {
   return (
     <View style={styles.wrapper}>
       <View style={styles.toolbarView}>
-        <KeyboardToolbar callback={toolBarCallBack}/>
+        <KeyboardToolbar callback={toolBarCallBack} />
       </View>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <View style={styles.postButtonContainer}>
+            <PostButton onPress={() => console.log("post pressed")} />
+          </View>
           <Text style={styles.text}>Create a new post!</Text>
           <View style={styles.inputContainer}>
             <View style={styles.overlay}>
@@ -48,7 +52,6 @@ function PostingScreen({ navigation }: { navigation: any }) {
                 changeContent(text);
               }}
             />
-
           </View>
         </KeyboardAvoidingView >
       </TouchableWithoutFeedback>
@@ -58,17 +61,17 @@ function PostingScreen({ navigation }: { navigation: any }) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: "100%"
+    height: "100%",
+    backgroundColor: "#211D33"
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "#211D33",
     padding: 10
   },
   text: {
-    fontSize: 30,
+    fontSize: 20,
     color: "#fff",
     paddingBottom: 20,
     marginTop: 0
@@ -99,6 +102,11 @@ const styles = StyleSheet.create({
   },
   toolbarView: {
     zIndex: 2
+  },
+  postButtonContainer: {
+    position: "absolute",
+    top: 50,
+    right: 20
   }
 });
 
