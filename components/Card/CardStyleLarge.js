@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: "center",
   },
+  userName: {
+  },
+  CardHeaderLeft: {
+  },
   CardHeaderRight: {
     flex: 0,
     flexDirection: "row",

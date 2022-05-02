@@ -59,7 +59,10 @@ function Card({ post, size = "large" }: CardProps) {
         <View style={styles.CardHeader}>
           {size === "large" ?
             <AvatarBadge user={post.user} /> :
-            <Avatar size="small" user={post.user} />}
+            <View style={styles.CardHeaderLeft}>
+              <Avatar size="small" user={post.user} />
+              <Text style={styles.userName}>@{post.user.name}</Text>
+            </View>}
           <View style={styles.CardHeaderRight}>
             <Text style={styles.LikeCount}>{post.voteCount + " ❤️"}</Text>
             {size === "large" ?

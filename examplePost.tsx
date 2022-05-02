@@ -81,7 +81,7 @@ const examplePosts: Post[] = [
       name: "FireShip",
       avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
     },
-    code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);`,
+    code: `import React from "react";\nimport { View, Text } from "react-native";\nreturn(null);\nreturn(null);\nreturn(null);\nreturn(null);\nreturn(null);\nreturn(null);\nreturn(null);\nreturn(null);`,
     language: "typescript" as Language,
     createdAt: new Date(),
     voteCount: 5,
