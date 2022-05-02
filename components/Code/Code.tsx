@@ -15,12 +15,14 @@ interface CodeProps {
 
 function Code({code, language}: CodeProps){
 
+
   const courierFont =
     Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 15
       ? "Courier New"
       : "Courier";
   const platformFont = Platform.OS === "ios" ? courierFont : "monospace";
   const fontFamily =  "Hack";
+
 
   return (
     <View style={styles.container}>
