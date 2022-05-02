@@ -4,7 +4,7 @@
  */
 
 import styles from "./CardDeckStyle";
-import { Animated, View, PanResponder} from "react-native";
+import { Animated, View, PanResponder, Platform} from "react-native";
 import { useRef, useState } from "react";
 import Post from "../../lib/types/post";
 import Card from "../Card/Card";
@@ -99,7 +99,11 @@ function CardDeck({ posts }: { posts: Post[] }) {
             cueOpacity.setValue({ x: gestureState.dx, y: gestureState.dy });
             
             if (Math.abs(gestureState.dx) > 120 && !tapped) {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              if (Platform.OS === "android") {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              } else {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              }
               tapped = true;
             } else if (Math.abs(gestureState.dx) < 120 && tapped) {
               tapped = false;
