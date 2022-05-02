@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import Post from "../../lib/types/post";
 import Card from "../Card/Card";
 import { Dimensions } from "react-native";
+import * as Haptics from 'expo-haptics';
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -28,13 +29,24 @@ function CardDeck({ posts }: { posts: Post[] }) {
     outputRange: [0.8, 1, 0.8],
     extrapolate: "clamp",
   });
+
+  const redCueOpacity = position.x.interpolate({
+    inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
+    outputRange: [0.05, 0, 0],
+    extrapolate: "clamp",
+  });
+
+  const greenCueOpacity = position.x.interpolate({
+    inputRange: [-screenWidth * 1 / 2, 0, screenWidth * 1 / 2],
+    outputRange: [0, 0, 0.05],
+    extrapolate: "clamp",
+  });
   
   const nextCardScale = position.x.interpolate({
     inputRange: [-screenWidth * 2 / 3, 0, screenWidth * 2 / 3],
     outputRange: [1, 0.9, 1],
     extrapolate: "clamp",
   });
-
 
   const nxt_translateX = nxt_position.x.interpolate({
     inputRange: [-screenWidth / 2, 0, screenWidth / 2],
@@ -71,6 +83,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
   }
 
   const currCard = () => {
+    let tapped = false;
 
     return (
       <Animated.View key={posts[selectedIndex].id} style={[styles.swipeCard, {
@@ -82,8 +95,16 @@ function CardDeck({ posts }: { posts: Post[] }) {
           onPanResponderMove: (evt, gestureState) => {
             position.setValue({ x: gestureState.dx, y: gestureState.dy });
             nxt_position.setValue({ x: gestureState.dx, y: gestureState.dy });
+            
+            if (Math.abs(gestureState.dx) > 120 && !tapped) {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+              tapped = true;
+            } else if (Math.abs(gestureState.dx) < 120 && tapped) {
+              tapped = false;
+            }
           },
           onPanResponderRelease: (evt, gestureState) => {
+            tapped = false;
 
             //swipe animation if sufficent swipe magnitude
             if (Math.abs(gestureState.dx) > 120) {
@@ -154,6 +175,18 @@ function CardDeck({ posts }: { posts: Post[] }) {
 
   return (
     <View style={styles.container}>
+      <Animated.View
+        style={[styles.redCue, {
+          opacity: redCueOpacity,
+        }]}
+        pointerEvents={"box-none"}
+      />
+      <Animated.View
+        style={[styles.greenCue, {
+          opacity: greenCueOpacity,
+        }]}
+        pointerEvents={"box-none"}
+      />
       {cards}
     </View>
   );
