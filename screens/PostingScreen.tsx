@@ -5,6 +5,8 @@ import { Language } from "prism-react-renderer";
 import KeyboardToolbar from "../components/KeyboardToolbar/KeyboardToolbar";
 import PostButton from "../components/PostButton";
 import useKeyboardOpen from "../lib/hooks/useKeyboardOpen";
+import CodeEditor from "../components/CodeEditor";
+import { useFonts } from "expo-font";
 
 const codeWindowPadding = 20;
 
@@ -14,6 +16,13 @@ function PostingScreen({ navigation }: { navigation: any }) {
   const maxLines = 18;
   // removed ability to click outside to close keyboard
   // replace with button to close keyboard with Keyboard.dismiss()
+
+  //require font
+  let [fontsLoaded] = useFonts({
+    Hack: require("../assets/fonts/Hack-Regular.ttf"),
+  });
+
+  
 
   const keyboardOpen = useKeyboardOpen();
 
@@ -41,37 +50,11 @@ function PostingScreen({ navigation }: { navigation: any }) {
           <PostButton onPress={() => onPostPress()} />
         </View>
         <Text style={styles.text}>Create a new post!</Text>
-        <View style={[styles.inputContainer, { height: inputContainerHeight }]}>
-          <View style={styles.overlay}>
-            <Code
-              code={textContent}
-              language={language as Language}
-              inEditor={true}
-            />
-          </View>
-          <TextInput
-            editable
-            maxLength={1250}
-            multiline={true}
-            autoCorrect={false}
-            autoCompleteType="off"
-            autoCapitalize="none"
-            disableFullscreenUI={true}
-            importantForAutofill="no"
-            keyboardType={keyboardType}
-            returnKeyType="none"
-            textAlignVertical="top"
-            style={styles.input}
-            value={textContent}
-            onChangeText={(text) => {
-              const lines = text.split("\n");
-              if (lines.length > maxLines) {
-                text = lines.slice(0, maxLines).join("\n");
-              }
-              changeContent(text);
-            }}
-          />
-        </View>
+        <CodeEditor 
+          code={textContent} 
+          language={language as Language}
+          updateCode={(code: string) => changeContent(code)}
+        />
       </KeyboardAvoidingView>
     </View>
   );
@@ -133,3 +116,34 @@ const styles = StyleSheet.create({
 });
 
 export default PostingScreen;
+
+
+
+
+{/* <View style={[styles.inputContainer, { height: inputContainerHeight }]}>
+  <View style={styles.overlay}>
+    <Code code={textContent} language={language as Language} inEditor={true} />
+  </View>
+  <TextInput
+    editable
+    maxLength={1250}
+    multiline={true}
+    autoCorrect={false}
+    autoCompleteType="off"
+    autoCapitalize="none"
+    disableFullscreenUI={true}
+    importantForAutofill="no"
+    keyboardType={keyboardType}
+    returnKeyType="none"
+    textAlignVertical="top"
+    style={styles.input}
+    value={textContent}
+    onChangeText={(text) => {
+      const lines = text.split("\n");
+      if (lines.length > maxLines) {
+        text = lines.slice(0, maxLines).join("\n");
+      }
+      changeContent(text);
+    }}
+  />
+</View>; */}

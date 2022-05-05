@@ -24,36 +24,6 @@ function Code({ code, language, inEditor = false }: CodeProps) {
   const platformFont = Platform.OS === "ios" ? courierFont : "monospace";
   const fontFamily = "Hack";
 
-  if (inEditor) {
-    return (
-      <View style={styles.container}>
-        <Highlight {...defaultProps} theme={theme} code={code} language={language}>
-          {({ style, tokens, getLineProps, getTokenProps }) => (
-            <View style={[styles.container, style, { backgroundColor: "transparent" }]}>
-              {tokens.map((line, i) => {
-                return <View key={i} {...getLineProps({ line, key: i, style: styles.row }).style}>
-                  {line.map((token, key) => {
-                    const props = getTokenProps({ token, key });
-                    if (token.empty) {
-                      return <Text key={props.key} style={{ color: "#252526" } as any}>
-                        O.O
-                      </Text>
-                    } else {
-                      return (
-                        <Text key={props.key} style={{ color: props.style?.color ?? "#fff" } as any}>
-                          {props.children}
-                        </Text>
-                      );
-                    }
-                  })}
-                </View>;
-              })}
-            </View>
-          )}
-        </Highlight>
-      </View>
-    );
-  } else {
     return (
       <View style={styles.container}>
         <Highlight {...defaultProps} theme={theme} code={code} language={language}>
@@ -71,11 +41,13 @@ function Code({ code, language, inEditor = false }: CodeProps) {
                             color: props.style?.color ?? "#fff",
                             fontFamily: fontFamily,
                             fontSize: 14,
-                            fontWeight: props.style?.fontWeight ?? "normal",
+                            lineHeight: 14,
+                            textAlignVertical: "top",
+                            //fontWeight: props.style?.fontWeight ?? "normal",
                           } as any
                         }
                       >
-                        {props.children}
+                        {!token.empty ? props.children : "\n"}
                       </Text>
                     );
                   })}
@@ -88,7 +60,6 @@ function Code({ code, language, inEditor = false }: CodeProps) {
 
     )
   }
-}
 
 
 export default Code;
