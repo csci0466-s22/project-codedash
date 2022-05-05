@@ -15,12 +15,17 @@ interface CodeEditorProps {
 function CodeEditor({code, updateCode, language}: CodeEditorProps){
   const keyboardType = Platform.OS === "ios" ? "default" : "visible-password";
 
+
+  const numLines = code.split("\n").length;
+  const height = 100 + (numLines + 1) * 16.33;
+
   //style={styles.container}
 
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={styles.scrollContent}
+      contentContainerStyle={[styles.scrollContent,  {height: height}]}
+      pointerEvents="box-none"
     >
       <TextInput
         editable

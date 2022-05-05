@@ -11,8 +11,18 @@ const styles = StyleSheet.create({
     width: "100%",
     //height: 520,
     height: "60%",
-    flexGrow:0,
+    flexGrow: 0,
     overflow: "hidden",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+    shadowColor: "#000",
+    borderColor: "#333333",
+    borderWidth: 1,
   },
 
   scrollContent: {
@@ -21,10 +31,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "nowrap",
     alignItems: "center",
-    //backgroundColor: "#252526",
+    minHeight: "60%",
+    //maxHeight: "200%",
+    //get height from number of lines
     borderRadius: 10,
-    width: "100%",
-    height: "100%",
+    overflow: "hidden",
   },
   overlay: {
     position: "absolute",
