@@ -39,7 +39,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
           <Text style={styles.text}>Create a new post!</Text>
           <View style={styles.inputContainer}>
             <View style={styles.overlay}>
-              <Code code={textContent} language={language as Language} inEditor={true}/>
+              <Code code={textContent} language={language as Language} inEditor={true} />
             </View>
             <TextInput
               editable
