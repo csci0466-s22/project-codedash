@@ -7,15 +7,17 @@ import Post from "../../lib/types/post";
 import Avatar from "../Avatar";
 import NativeIconicIcon from "../NativeIconicIcon";
 import React, { ReactFragment, useRef } from "react";
+import CardLikeCue from "../CardLikeCue";
 
 
 interface CardProps {
   post: Post;
   size?: "small" | "large";
+  children?: ReactFragment;
 };
 
 
-function Card({ post, size = "large" }: CardProps) {
+function Card({ post, size = "large", children}: CardProps) {
   const styles = size === "large" ? stylesLarge : stylesSmall;
 
   const onMenuPress = () => {
@@ -82,12 +84,13 @@ function Card({ post, size = "large" }: CardProps) {
               null}
           </View>
         </View>
-        <View style={styles.CodeContainer}>
-          <Code
-            code={post.code}
-            language={post.language}
-          />
-        </View>
+          <View style={styles.CodeContainer}>
+            <Code
+              code={post.code}
+              language={post.language}
+            />
+            {children}
+          </View>
       </Animated.View >
     </TC>
   );
