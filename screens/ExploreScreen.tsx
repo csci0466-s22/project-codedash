@@ -8,6 +8,7 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Fuse from 'fuse.js'
 import { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
+import { Platform } from "react-native";
 
 
 
@@ -84,7 +85,7 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
         onSearchPress={() => {doSearch(searchTerm)}}
         onClearPress={() => {setSearchTerm("")}}
         onSubmitEditing={() => {doSearch(searchTerm)}}
-
+        
         returnKeyType="search"
         //onSearchPress={() => {doSearch(searchTerm)}}
       />
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     color: "#fff",
-    paddingTop: 30,
+    paddingTop: (Platform.OS==="android" ? 50 : 30),
     paddingBottom: 20,
     width: '100%',
     textAlign: 'center',
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     position: "absolute",
-    top: 60,
+    top: (Platform.OS==="android" ? 50 : 70),
     right: 20,
     zIndex: 1,
   },
