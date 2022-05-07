@@ -45,6 +45,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
   return (
     <View style={styles.wrapper} pointerEvents="box-none">
       <KeyboardToolbar callback={toolBarCallBack} />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <View style={styles.postButtonContainer}>
           <PostButton onPress={() => onPostPress()} />
@@ -56,6 +57,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
           updateCode={(code: string) => changeContent(code)}
         />
       </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
