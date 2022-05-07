@@ -20,7 +20,12 @@ function CardDeck({ posts }: { posts: Post[] }) {
   const cueOpacity = useRef(new Animated.ValueXY()).current;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const [wiggleAnimationShown, setWiggleAnimationShown] = useState(false);
+  // Wiggle animation when first shown, using spring
+  const [firstLoadWiggleShouldShow, setFirstLoadWiggleShouldShow] = useState(true);
+  // avoid double tap animation, using timing
+  const [swipeCueAnimationShouldShow, setSwipeCueAnimationShouldShow] = useState(false); 
+
+  const [tapStartTime, setTapStartTime] = useState(0);
 
   const rotation = position.x.interpolate({
     inputRange: [-screenWidth / 2, 0, screenWidth / 2],
@@ -94,29 +99,59 @@ function CardDeck({ posts }: { posts: Post[] }) {
     return currIndex === posts.length - 1 ? 0 : currIndex + 1;
   };
 
-  const wiggleAnimation = () => {
-    Animated.sequence([
-      Animated.timing(position, {
-        toValue: { x: 50, y: 0 },
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.spring(position, {
-        toValue: { x: 0, y: 0 },
-        friction: 3,
-        tension: 50,
-        useNativeDriver: true,
-      })]).start(() => {
-        position.setValue({ x: 0, y: 0 });
-        setWiggleAnimationShown(true);
-      });
+  const firstLoadWiggleAnimation = () => {
+    Animated.timing(position, {
+      toValue: { x: 50, y: 0 },
+      duration: 300,
+      useNativeDriver: true,
+    }).start((finished) => {
+      if (finished) {
+        Animated.spring(position, {
+          toValue: { x: 0, y: 0 },
+          friction: 4,
+          tension: 60,
+          useNativeDriver: true,
+        }).start((finished) => {
+          if (finished) {
+            position.setValue({ x: 0, y: 0 });
+            setFirstLoadWiggleShouldShow(false);
+          }
+        });
+      }
+    });
+  };
+  
+  const swipeCueAnimation = () => {
+    Animated.timing(position, {
+      toValue: { x: 50, y: 0 },
+      duration: 300,
+      useNativeDriver: true,
+    }).start((finished) => {
+      if (finished) {
+        Animated.timing(position, {
+          toValue: { x: 0, y: 0 },
+          duration: 300,
+          useNativeDriver: true,
+        }).start((finished) => {
+          if (finished) {
+            position.setValue({ x: 0, y: 0 });
+            setSwipeCueAnimationShouldShow(false);
+          }
+        });
+      }
+    });
   };
 
-  const currCard = (showWiggleAnimation: boolean) => {
+  const currCard = (showAnimation: boolean) => {
     let tapped = false;
 
-    if (showWiggleAnimation) {
-      wiggleAnimation();
+    if (showAnimation) {
+      if (firstLoadWiggleShouldShow) {
+        firstLoadWiggleAnimation();
+      } else if (swipeCueAnimationShouldShow) {
+        swipeCueAnimation();
+      }
+
       return (
         <Animated.View
           key={posts[selectedIndex].id}
@@ -178,6 +213,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
               const magnitude =
                 10 - Math.floor((4 * (Math.abs(gestureState.dx) - 120)) / 180);
 
+              //console.log(nxt_position.x);
               // Wiggle back!
               Animated.spring(nxt_position, {
                 toValue: { x: 0, y: 0 },
@@ -207,6 +243,14 @@ function CardDeck({ posts }: { posts: Post[] }) {
                 friction: 5,
                 useNativeDriver: true,
               }).start();
+            }
+          },
+          onPanResponderStart(evt, gestureState) {
+            if (evt.timeStamp - tapStartTime < 300) {
+              // double tap detected, show swipe cue
+              setSwipeCueAnimationShouldShow(true);
+            } else {
+              setTapStartTime(evt.timeStamp);
             }
           },
         }).panHandlers}
@@ -243,7 +287,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
     );
   };
 
-  const cards = [nextCard(), currCard(!wiggleAnimationShown)];
+  const cards = [nextCard(), currCard(firstLoadWiggleShouldShow || swipeCueAnimationShouldShow)];
 
   return (
     <View style={styles.container}>

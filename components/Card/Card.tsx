@@ -76,7 +76,7 @@ function Card({ post, size = "large", children}: CardProps) {
             </View>}
           <View style={styles.CardHeaderRight}>
             <Text style={styles.LikeCountBold}>{post.voteCount}</Text>
-            <Text style={styles.LikeCount}>{"  likes"}</Text>
+            <Text style={styles.LikeCount}>{"  Likes"}</Text>
             {size === "large" ?
               <TouchableOpacity onPress={onMenuPress}>
                 <NativeIconicIcon name="ellipsis-vertical" size={18} color="#fff" />
