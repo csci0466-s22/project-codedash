@@ -6,9 +6,10 @@ import styles from "./AvatarBadgeStyle";
 
 interface AvatarBadgeProps {
   user: User;
+  shouldShowBorder?: boolean;
 }
 
-function AvatarBadge({ user }: AvatarBadgeProps) {
+function AvatarBadge({ user, shouldShowBorder }: AvatarBadgeProps) {
   const to = { screen: "Profile", params: { id: user?.id } };
   const { onPress } = useLinkProps({ to }) ?? { onPress: () => {} };
 
