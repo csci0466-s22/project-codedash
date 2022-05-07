@@ -53,10 +53,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   LikeCount: {
-    marginTop: 10,
     marginRight: 20,
     color: '#ffffff',
     justifyContent: 'flex-end'
+  },
+  LikeCountBold: {
+    color: "#ffffff",
+    fontWeight: "bold",
   },
   CodeContainer: {
     padding: 20
