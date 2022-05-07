@@ -20,6 +20,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
   const cueOpacity = useRef(new Animated.ValueXY()).current;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const [wiggleAnimationShown, setWiggleAnimationShown] = useState(false);
 
   const rotation = position.x.interpolate({
     inputRange: [-screenWidth / 2, 0, screenWidth / 2],
@@ -50,11 +51,11 @@ function CardDeck({ posts }: { posts: Post[] }) {
     extrapolate: "clamp",
   });
 
-    const iconDislikeCueOpacity = cueOpacity.x.interpolate({
-      inputRange: [(-screenWidth * 1) / 2, 0, (screenWidth * 1) / 2],
-      outputRange: [1, 0, 0],
-      extrapolate: "clamp",
-    });
+  const iconDislikeCueOpacity = cueOpacity.x.interpolate({
+    inputRange: [(-screenWidth * 1) / 2, 0, (screenWidth * 1) / 2],
+    outputRange: [1, 0, 0],
+    extrapolate: "clamp",
+  });
 
 
   const nextCardScale = position.x.interpolate({
@@ -93,8 +94,44 @@ function CardDeck({ posts }: { posts: Post[] }) {
     return currIndex === posts.length - 1 ? 0 : currIndex + 1;
   };
 
-  const currCard = () => {
+  const wiggleAnimation = () => {
+    Animated.sequence([
+      Animated.timing(position, {
+        toValue: { x: 50, y: 0 },
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.spring(position, {
+        toValue: { x: 0, y: 0 },
+        friction: 3,
+        tension: 50,
+        useNativeDriver: true,
+      })]).start(() => {
+        position.setValue({ x: 0, y: 0 });
+        setWiggleAnimationShown(true);
+      });
+  };
+
+  const currCard = (showWiggleAnimation: boolean) => {
     let tapped = false;
+
+    if (showWiggleAnimation) {
+      wiggleAnimation();
+      return (
+        <Animated.View
+          key={posts[selectedIndex].id}
+          style={[styles.swipeCard, {
+            transform: [{
+              rotate: rotation,
+              translateX: position.x,
+              translateY: position.y,
+            }],
+          }]}
+        >
+          <Card post={posts[selectedIndex]} size="large" />
+        </Animated.View>
+      );
+    }
 
     return (
       <Animated.View
@@ -206,7 +243,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
     );
   };
 
-  const cards = [nextCard(), currCard()];
+  const cards = [nextCard(), currCard(!wiggleAnimationShown)];
 
   return (
     <View style={styles.container}>
