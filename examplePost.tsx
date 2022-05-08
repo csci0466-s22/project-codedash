@@ -12,7 +12,7 @@ const examplePosts: Post[] = [
     code: `#wife {\n  right: 100%;\n  margin: 0;\n}`,
     language: "css" as Language,
     createdAt: new Date(),
-    voteCount: 0,
+    voteCount: 10000,
   },
   {
     
