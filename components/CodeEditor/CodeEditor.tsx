@@ -1,6 +1,6 @@
 import { Language } from "prism-react-renderer";
 import Code2 from "../Code2";
-import { View, TextInput, Platform} from "react-native";
+import { View, Text, TextInput, Platform} from "react-native";
 import styles from "./CodeEditorStyle";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -19,12 +19,10 @@ function CodeEditor({code, updateCode, language}: CodeEditorProps){
   const numLines = code.split("\n").length;
   const height = 100 + (numLines + 1) * 16.33;
 
-  //style={styles.container}
-
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={[styles.scrollContent,  {height: height}]}
+      contentContainerStyle={[styles.scrollContent, { height: height }]}
       pointerEvents="box-none"
     >
       <TextInput
@@ -51,9 +49,6 @@ function CodeEditor({code, updateCode, language}: CodeEditorProps){
     </ScrollView>
   );
 }
-
-//put both overlay and text input into a scroll view, have them have unlimited heihgt but limit size of scroll view
-// scroll both overlay and text input to the same position
 
 export default CodeEditor;
 

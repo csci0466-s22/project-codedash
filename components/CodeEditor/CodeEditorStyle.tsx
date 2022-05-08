@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     alignItems: "center",
     minHeight: "60%",
-    //maxHeight: "200%",
-    //get height from number of lines
     borderRadius: 10,
     overflow: "hidden",
   },
@@ -42,6 +40,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     padding: 20,
+    zIndex: 100,
+    borderWidth: 1,
+    borderColor: "white",
+    //backgroundColor: "red",
   },
   input: {
     width: "100%",
@@ -49,10 +51,11 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 14,
     //color: "black",
-    color: "transparent",
+    //color: "transparent",
     lineHeight: 14, // value to align with overlay
     fontFamily: "Hack",
     textAlignVertical: "top",
+    zIndex: 2,
   },
 });
 

@@ -43,7 +43,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
 
 
   return (
-    <View style={styles.wrapper} pointerEvents="box-none">
+    <SafeAreaView style={styles.wrapper} pointerEvents="box-none">
       <KeyboardToolbar callback={toolBarCallBack} />
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <View style={styles.postButtonContainer}>
@@ -56,7 +56,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
           updateCode={(code: string) => changeContent(code)}
         />
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }
 

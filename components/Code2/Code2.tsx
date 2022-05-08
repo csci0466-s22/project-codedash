@@ -20,6 +20,7 @@ interface CodeProps {
 }
 
 function Code2({ code, language, inEditor = false }: CodeProps) {
+
   const courierFont =
     Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 15
       ? "Courier New"
@@ -27,24 +28,35 @@ function Code2({ code, language, inEditor = false }: CodeProps) {
   const platformFont = Platform.OS === "ios" ? courierFont : "monospace";
   const fontFamily = "Hack";
 
+
+  console.log(platformFont);
+
   const rowStyle = (lineNumber: number) => [
     styles.row,
     { top: 3 + 14 * lineNumber },
   ];
   const rowStyle2 = (lineNumber: number) => {
+
+    console.log(lineNumber);
+
+
     return StyleSheet.create({
       row: {
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        position: "absolute",
+        //alignItems: "flex-start",
+        //justifyContent: "flex-start",
+        //flexDirection: "row",
+        //flexWrap: "wrap",
+        //position: "absolute",
         height: 16.33,
         margin: 0,
         padding: 0,
         borderWidth: 1,
-        borderColor: "transparent",
-        top: 3 + 16.33 * lineNumber,
+        position: "relative",
+        //top: 3 + 16.33 * lineNumber,
+
+        //borderColor: "transparent",
+        borderColor: "white",
+        //top: 3 + 16.33 * lineNumber,
       },
     }).row;
   };
