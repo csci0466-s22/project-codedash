@@ -48,9 +48,18 @@ function Card({ post, size = "large", children}: CardProps) {
     }
   };
 
+  const onSmallCardPress = () => {
+    console.log("Small card pressed");
+    
+  };
+
   // Touchable container
   function TC({ size, children }: { size: string, children: React.ReactChild }) {
-    return (size === "small") ? <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut} >{children}</TouchableWithoutFeedback> : <>{children}</>;
+    return (size === "small") ?
+      <TouchableWithoutFeedback onPress={onSmallCardPress} onPressIn={onPressIn} onPressOut={onPressOut} >
+        {children}
+      </TouchableWithoutFeedback>
+      : <>{children}</>;
 
   };
 
