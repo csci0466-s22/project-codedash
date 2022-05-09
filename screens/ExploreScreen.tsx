@@ -37,7 +37,10 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
     setDisplayCards(results.map(r => r.item));
   }
 
-  
+  const onSmallCardPress = (post: Post) => {
+    console.log("small card pressed");
+    navigation.navigate("SingleCard", { post });
+  }
 
   const data: Post[] = examplePosts;
 
@@ -45,7 +48,7 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
 
   const ItemRenderer: ListRenderItem<Post> = ({ item }) => {
     return (
-      <Card post={item} size="small" />
+      <Card post={item} size="small" onPress={onSmallCardPress}/>
     )
   };
 

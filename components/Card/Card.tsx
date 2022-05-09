@@ -15,10 +15,11 @@ interface CardProps {
   post: Post;
   size?: "small" | "large";
   children?: ReactFragment;
+  onPress?: (post: Post) => void;
 };
 
 
-function Card({ post, size = "large", children}: CardProps) {
+function Card({ post, size = "large", children, onPress}: CardProps) {
   const styles = size === "large" ? stylesLarge : stylesSmall;
 
   const onMenuPress = () => {
@@ -49,15 +50,10 @@ function Card({ post, size = "large", children}: CardProps) {
     }
   };
 
-  const onSmallCardPress = () => {
-    console.log("Small card pressed");
-    
-  };
-
   // Touchable container
   function TC({ size, children }: { size: string, children: React.ReactChild }) {
     return (size === "small") ?
-      <TouchableWithoutFeedback onPress={onSmallCardPress} onPressIn={onPressIn} onPressOut={onPressOut} >
+      <TouchableWithoutFeedback onPress={()=>{onPress?.(post)}} onPressIn={onPressIn} onPressOut={onPressOut} >
         {children}
       </TouchableWithoutFeedback>
       : <>{children}</>;
