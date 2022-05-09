@@ -12,11 +12,16 @@ function ProfileScreen({ route, navigation}: { route: any, navigation: any}) {
   const data: Post[] = examplePosts.filter(post => post.user.id === route.params.id);
   const user = useUserById(route.params.id);
 
+  const onSmallCardPress = (post: Post) => {
+    console.log("small card pressed");
+    navigation.navigate("SingleCard", { post });
+  }
+
   const keyExtractor = (post: Post) => post.id;
 
   const ItemRenderer: ListRenderItem<Post> = ({ item }) => {
     return (
-      <Card post={item} size="small" />
+      <Card post={item} size="small" onPress={onSmallCardPress}/>
     )
   };
 
