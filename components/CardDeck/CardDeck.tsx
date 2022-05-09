@@ -104,7 +104,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
     const xPos = Math.random() >= 0.5 ? 50 : -50;
 
     Animated.timing(position, {
-      toValue: { x: 50, y: 0 },
+      toValue: { x: xPos, y: 0 },
       duration: 300,
       useNativeDriver: true,
     }).start((finished) => {
