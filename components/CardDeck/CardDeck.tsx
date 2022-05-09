@@ -24,6 +24,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
   const [firstLoadWiggleShouldShow, setFirstLoadWiggleShouldShow] = useState(true);
   // avoid double tap animation, using timing
   const [swipeCueAnimationShouldShow, setSwipeCueAnimationShouldShow] = useState(false); 
+  const [swipeCuePositionX, setSwipeCuePositionX] = useState(screenWidth/2);
 
   const [tapStartTime, setTapStartTime] = useState(0);
 
@@ -122,20 +123,23 @@ function CardDeck({ posts }: { posts: Post[] }) {
   };
   
   const swipeCueAnimation = () => {
+    const xPos = (swipeCuePositionX >= screenWidth/2) ? 50 : -50;
+
     Animated.timing(position, {
-      toValue: { x: 50, y: 0 },
-      duration: 300,
+      toValue: { x: xPos, y: 0 },
+      duration: 200,
       useNativeDriver: true,
     }).start((finished) => {
       if (finished) {
         Animated.timing(position, {
           toValue: { x: 0, y: 0 },
-          duration: 300,
+          duration: 200,
           useNativeDriver: true,
         }).start((finished) => {
           if (finished) {
             position.setValue({ x: 0, y: 0 });
             setSwipeCueAnimationShouldShow(false);
+            setSwipeCuePositionX(screenWidth/2);
           }
         });
       }
@@ -249,6 +253,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
             if (evt.timeStamp - tapStartTime < 300) {
               // double tap detected, show swipe cue
               setSwipeCueAnimationShouldShow(true);
+              setSwipeCuePositionX(evt.nativeEvent.locationX);
             } else {
               setTapStartTime(evt.timeStamp);
             }
