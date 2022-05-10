@@ -13,7 +13,7 @@ const codeWindowPadding = 20;
 function PostingScreen({ navigation }: { navigation: any }) {
   const [textContent, changeContent] = useState('');
   const [language, changeLanguage] = useState('python');
-  const [cursorPoistion, updateCursorPosition] = useState({ start: 0, end: 0 });
+  const [cursorPosition, updateCursorPosition] = useState({ start: 0, end: 0 });
 
   //require font
   let [fontsLoaded] = useFonts({
@@ -24,10 +24,17 @@ function PostingScreen({ navigation }: { navigation: any }) {
   const toolBarCallBack = (buttonContent: string) => {
     //changeContent(textContent + buttonContent);
     //cursor position is an index, add text at index
-    changeContent(textContent.substring(0, cursorPoistion.start) + buttonContent + textContent.substring(cursorPoistion.start));
+    changeContent(
+      textContent.substring(0, cursorPosition.start) +
+        buttonContent +
+        textContent.substring(cursorPosition.start)
+    );
 
     //change cursor position to end of added token
-    updateCursorPosition({start: cursorPoistion.start + buttonContent.length, end: cursorPoistion.end + buttonContent.length});
+    updateCursorPosition({
+      start: cursorPosition.start + buttonContent.length,
+      end: cursorPosition.end + buttonContent.length,
+    });
   };
 
   const onPostPress = () => {
@@ -45,12 +52,14 @@ function PostingScreen({ navigation }: { navigation: any }) {
           <PostButton onPress={() => onPostPress()} />
         </View>
         <Text style={styles.text}>Create a new post!</Text>
-        <CodeEditor 
-          code={textContent} 
+        <CodeEditor
+          code={textContent}
           language={language as Language}
           updateCode={(code: string) => changeContent(code)}
-          cursorPosition={cursorPoistion}
-          updateCursorPosition={(position: {start:number, end:number}) => updateCursorPosition(position)}
+          cursorPosition={cursorPosition}
+          updateCursorPosition={(position: { start: number; end: number }) =>
+            updateCursorPosition(position)
+          }
         />
       </KeyboardAvoidingView>
     </SafeAreaView>
