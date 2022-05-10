@@ -5,12 +5,9 @@ import {
   Text,
   Platform,
   StyleSheet,
-  StyleProp,
-  ViewStyle,
 } from "react-native";
 //import theme from "prism-react-renderer/themes/nightOwl";
 import theme from "prism-react-renderer/themes/okaidia";
-import { useFonts } from "expo-font";
 import { ScrollView } from "react-native-gesture-handler";
 
 interface CodeProps {
@@ -29,34 +26,23 @@ function Code2({ code, language, inEditor = false }: CodeProps) {
   const fontFamily = "Hack";
 
 
-  console.log(platformFont);
-
-  const rowStyle = (lineNumber: number) => [
-    styles.row,
-    { top: 3 + 14 * lineNumber },
-  ];
   const rowStyle2 = (lineNumber: number) => {
-
-    console.log(lineNumber);
-
+    //this function is now obsolete, refactor to simple style just in the stylesheet file
 
     return StyleSheet.create({
       row: {
-        //alignItems: "flex-start",
-        //justifyContent: "flex-start",
-        //flexDirection: "row",
-        //flexWrap: "wrap",
-        //position: "absolute",
-        height: 16.33,
-        margin: 0,
-        padding: 0,
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+        flexDirection: "row",
+        flexWrap: "nowrap",
+        //height: Platform.OS === "ios" ? 16 : 16.33,
+        height: Platform.OS === "ios" ? 16 : 16.348,
+        width: "100%",
         borderWidth: 1,
         position: "relative",
-        //top: 3 + 16.33 * lineNumber,
-
-        //borderColor: "transparent",
-        borderColor: "white",
-        //top: 3 + 16.33 * lineNumber,
+        top: Platform.OS === "ios" ? -1 : 0,
+        left: -1,
+        borderColor: "transparent",
       },
     }).row;
   };

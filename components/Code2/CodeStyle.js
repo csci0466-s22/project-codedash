@@ -5,10 +5,11 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: "transparent",
+    //backgroundColor: "transparent",
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "white",
+    //borderColor: "white",
+    borderColor: "transparent",
   },
   row: {
     flexDirection: "row",

@@ -8,11 +8,13 @@ import { ScrollView } from "react-native-gesture-handler";
 interface CodeEditorProps {
   code: string;
   updateCode: (code: string) => void;
+  updateCursorPosition: (position: {start:number, end:number}) => void;
+  cursorPosition: {start: number, end: number};
   language: Language;
 };
 
 
-function CodeEditor({code, updateCode, language}: CodeEditorProps){
+function CodeEditor({code, updateCode, updateCursorPosition, cursorPosition, language}: CodeEditorProps){
   const keyboardType = Platform.OS === "ios" ? "default" : "visible-password";
 
 
@@ -27,7 +29,8 @@ function CodeEditor({code, updateCode, language}: CodeEditorProps){
     >
       <TextInput
         editable
-        maxLength={1250}
+        selection={{start: cursorPosition.start, end: cursorPosition.end}}
+        maxLength={256}
         multiline={true}
         autoCorrect={false}
         autoCompleteType="off"
@@ -39,9 +42,11 @@ function CodeEditor({code, updateCode, language}: CodeEditorProps){
         textAlignVertical="top"
         style={styles.input}
         value={code}
+        onSelectionChange = {(event) => {updateCursorPosition({start: event.nativeEvent.selection.start, end: event.nativeEvent.selection.end});}}
         onChangeText={(t) => {
           updateCode(t);
         }}
+
       />
       <View style={styles.overlay} pointerEvents="none">
         <Code2 code={code} language={language} inEditor />

@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, SafeAreaView, Platform } from "react-native";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
 import KeyboardToolbar from "../components/KeyboardToolbar/KeyboardToolbar";
@@ -13,23 +13,21 @@ const codeWindowPadding = 20;
 function PostingScreen({ navigation }: { navigation: any }) {
   const [textContent, changeContent] = useState('');
   const [language, changeLanguage] = useState('python');
-  const maxLines = 18;
-  // removed ability to click outside to close keyboard
-  // replace with button to close keyboard with Keyboard.dismiss()
+  const [cursorPoistion, updateCursorPosition] = useState({ start: 0, end: 0 });
 
   //require font
   let [fontsLoaded] = useFonts({
     Hack: require("../assets/fonts/Hack-Regular.ttf"),
   });
 
-  
-
-  const keyboardOpen = useKeyboardOpen();
-
-  const inputContainerHeight = (!keyboardOpen) ? '70%' : 250;
 
   const toolBarCallBack = (buttonContent: string) => {
-    changeContent(textContent + buttonContent);
+    //changeContent(textContent + buttonContent);
+    //cursor position is an index, add text at index
+    changeContent(textContent.substring(0, cursorPoistion.start) + buttonContent + textContent.substring(cursorPoistion.start));
+
+    //change cursor position to end of added token
+    updateCursorPosition({start: cursorPoistion.start + buttonContent.length, end: cursorPoistion.end + buttonContent.length});
   };
 
   const onPostPress = () => {
@@ -37,9 +35,6 @@ function PostingScreen({ navigation }: { navigation: any }) {
     navigation.navigate('MainStack', {
     });
   };
-
-
-  const keyboardType = (Platform.OS === 'ios') ? 'default' : 'visible-password';
 
 
   return (
@@ -54,6 +49,8 @@ function PostingScreen({ navigation }: { navigation: any }) {
           code={textContent} 
           language={language as Language}
           updateCode={(code: string) => changeContent(code)}
+          cursorPosition={cursorPoistion}
+          updateCursorPosition={(position: {start:number, end:number}) => updateCursorPosition(position)}
         />
       </KeyboardAvoidingView>
     </SafeAreaView>
