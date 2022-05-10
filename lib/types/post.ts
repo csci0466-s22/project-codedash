@@ -5,7 +5,7 @@ export default interface Post {
     id: string;
     code: string;
     user: User;
-    createdAt: Date;
+    createdAt: String;
     voteCount: number;
     language: Language;
 };
