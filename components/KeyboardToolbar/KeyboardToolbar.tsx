@@ -3,58 +3,45 @@ import { View, Text, Keyboard, Dimensions, KeyboardAvoidingView, Button, Touchab
 import { useState, useEffect } from 'react';
 import useKeyboardOpen from "../../lib/hooks/useKeyboardOpen";
 import useKeyboardHeight from "../../lib/hooks/useKeyboardHeight";
-import Highlight from "prism-react-renderer";
+import Highlight, { Language } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/okaidia";
+import { Toolbar, ToolbarItem } from "../../lib/types/toolbar";
+import { LanguageToolbarMapping } from "../../lib/utils";
 
 
 //TODO: add coloring for the buttons
-
-
-
+interface KeyboardToolbarProps {
+  callback: (buttonContent: string) => void;
+  language?: Language;
+}
 const windowHeight = Dimensions.get('window').height;
-function KeyboardMenu({ callback }: { callback: (buttonContent: string) => void }) {
+
+
+
+function KeyboardToolbar({ callback, language="python" }: KeyboardToolbarProps) {
   const keyboardVisible = useKeyboardOpen();
   const keyboardHeight = useKeyboardHeight();
 
 
-
-  //let's grab the highlight color
-
-
-  const generateButton = (buttonContent: string, index: number) => {
+  const generateButton = (buttonContent: ToolbarItem, index: number) => {
     return (
       <TouchableOpacity 
           key={index}
           style={styles.button}
           onPress={() => {
-            console.log(buttonContent);
-            callback(buttonContent);
+            callback(buttonContent.value);
           }}
         >
-          <Text style={styles.buttonText}>{buttonContent}</Text>
+          <Text style={styles.buttonText}>{buttonContent.label}</Text>
       </TouchableOpacity>
     );
   };
 
-  const buttonContents = [
-    ':',
-    '(',
-    ')',
-    '=',
-    'def',
-    'return',
-    'for',
-    'if',
-    'else',
-    'lambda(x)',
-    "test1",
-    "test2",
-    "test3",
-    "test4",
-    "test5",
-  ];
+  const toolbar = LanguageToolbarMapping[language] as Toolbar;
+  const buttons = toolbar.items.map((item, index) => {
+    return generateButton(item, index);
+  });
 
-  //const height = (!keyboardVisible) ? 50 : 0;
   const top = (!keyboardVisible) ? 0 : windowHeight - keyboardHeight - 50;
 
 
@@ -66,10 +53,9 @@ function KeyboardMenu({ callback }: { callback: (buttonContent: string) => void 
       contentContainerStyle={styles.barContent}
       horizontal={true}
       alwaysBounceHorizontal
+
     >
-      {buttonContents.map((buttonContent, index) =>
-        generateButton(buttonContent, index)
-      )}
+      {buttons}
     </ScrollView>
   );
 
@@ -81,4 +67,4 @@ function KeyboardMenu({ callback }: { callback: (buttonContent: string) => void 
 }
 
 
-export default KeyboardMenu;
+export default KeyboardToolbar;

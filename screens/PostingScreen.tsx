@@ -2,17 +2,19 @@ import { View, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback, 
 import { useState, useEffect, useRef } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
-import KeyboardToolbar from "../components/KeyboardToolbar/KeyboardToolbar";
+import KeyboardToolbar from "../components/KeyboardToolbar";
 import PostButton from "../components/PostButton";
 import useKeyboardOpen from "../lib/hooks/useKeyboardOpen";
 import CodeEditor from "../components/CodeEditor";
 import { useFonts } from "expo-font";
+import { Picker } from "@react-native-picker/picker";
+import LanguagePicker from "../components/LanguagePicker";
 
 const codeWindowPadding = 20;
 
 function PostingScreen({ navigation }: { navigation: any }) {
-  const [textContent, changeContent] = useState('');
-  const [language, changeLanguage] = useState('python');
+  const [textContent, changeContent] = useState<string>('');
+  const [language, setLanguage] = useState<Language>('python');
   const [cursorPosition, updateCursorPosition] = useState({ start: 0, end: 0 });
 
   //require font
@@ -22,7 +24,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
 
 
   const toolBarCallBack = (buttonContent: string) => {
-    //changeContent(textContent + buttonContent);
+
     //cursor position is an index, add text at index
     changeContent(
       textContent.substring(0, cursorPosition.start) +
@@ -46,15 +48,16 @@ function PostingScreen({ navigation }: { navigation: any }) {
 
   return (
     <SafeAreaView style={styles.wrapper} pointerEvents="box-none">
-      <KeyboardToolbar callback={toolBarCallBack} />
+      <KeyboardToolbar callback={toolBarCallBack} language={language} />
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <View style={styles.postButtonContainer}>
           <PostButton onPress={() => onPostPress()} />
+          <LanguagePicker callback={setLanguage} selected={language} />
         </View>
-        <Text style={styles.text}>Create a new post!</Text>
+
         <CodeEditor
           code={textContent}
-          language={language as Language}
+          language={language}
           updateCode={(code: string) => changeContent(code)}
           cursorPosition={cursorPosition}
           updateCursorPosition={(position: { start: number; end: number }) =>
@@ -79,7 +82,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   text: {
-    fontSize: 20,
+    fontSize: 30,
     color: "#fff",
     paddingBottom: 20,
     marginTop: 0,
