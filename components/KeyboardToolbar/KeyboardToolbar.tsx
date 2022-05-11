@@ -42,7 +42,7 @@ function KeyboardToolbar({ callback, language="python" }: KeyboardToolbarProps) 
     return generateButton(item, index);
   });
 
-  const top = (!keyboardVisible) ? 0 : windowHeight - keyboardHeight - 50;
+  const top = (!keyboardVisible) ? 0 : windowHeight - keyboardHeight - 60;
 
 
   const barContent = (

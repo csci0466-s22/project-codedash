@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     position: "absolute",
     width: "100%",
-    height: 50,
+    height: 60,
     paddingLeft: 10,
     borderTopLeftRadius: 2,
     borderTopRightRadius: 2,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    height: "80%",
+    height: "70%",
     borderWidth: 1,
     borderColor: "#333333",
     backgroundColor: "#38383B",
