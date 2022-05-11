@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from '../screens/MainScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import SingleCardScreen from '../screens/SingleCardScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,12 @@ function MainStack() {
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
+        options={{
+          //tabBarIcon: ({ color, size }) => <NativeIconicIcon name="checkmark-circle" color={color} size={size} />
+        }} />
+      <Stack.Screen
+        name="SingleCard"
+        component={SingleCardScreen}
         options={{
           //tabBarIcon: ({ color, size }) => <NativeIconicIcon name="checkmark-circle" color={color} size={size} />
         }} />

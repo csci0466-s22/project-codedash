@@ -11,8 +11,8 @@ const examplePosts: Post[] = [
     },
     code: `#wife {\n  right: 100%;\n  margin: 0;\n}`,
     language: "css" as Language,
-    createdAt: new Date(),
-    voteCount: 0,
+    createdAt: new Date().toISOString(),
+    voteCount: 10000,
   },
   {
     
@@ -25,7 +25,7 @@ const examplePosts: Post[] = [
     },
     code: `#invisibility-cloak {\n  visibility: hidden;\n}`,
     language: "css" as Language,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     voteCount: 1,
   },
   {
@@ -37,7 +37,7 @@ const examplePosts: Post[] = [
     },
     code: `public static DateTime getTomorrowsData() {\n  Thread.Sleep(24*60*60*1000);\n  return DataTime.Now;\n}`,
     language: "javascript" as Language,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     voteCount: 2,
   },
   {
@@ -49,7 +49,7 @@ const examplePosts: Post[] = [
     },
     code: `// Magic. Do not touch.\nconst regularExpression = ^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;`,
     language: "javascript" as Language,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     voteCount: 3,
   },
   {
@@ -61,7 +61,7 @@ const examplePosts: Post[] = [
     },
     code: `#eu .country {\n  border: none;\n}`,
     language: "css" as Language,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     voteCount: 4,
   },
   {
@@ -73,7 +73,7 @@ const examplePosts: Post[] = [
     },
     code: `if (YourHeartIsSetTo('Me')):\n  MyLove += 1\nelse:\n  MyLife = None`,
     language: "python" as Language,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     voteCount: 5,
   },
   {
@@ -85,7 +85,7 @@ const examplePosts: Post[] = [
     },
     code: `#tower-of-pisa {\n  font-style: italic;\n}`,
     language: "css" as Language,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     voteCount: 5,
   },
   {
@@ -97,7 +97,7 @@ const examplePosts: Post[] = [
     },
     code: `.goverment {\n  transition: all "4yr" ease-in-out;\n}`,
     language: "css" as Language,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     voteCount: 5,
   },
   {
@@ -109,7 +109,7 @@ const examplePosts: Post[] = [
     },
     code: `int getRandomNumber()\n{\n  return 4; // chosen by fair dice roll.\n            // guaranteed to be random.\n}`,
     language: "c" as Language,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     voteCount: 5,
   }
 ]

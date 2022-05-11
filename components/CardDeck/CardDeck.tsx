@@ -20,6 +20,13 @@ function CardDeck({ posts }: { posts: Post[] }) {
   const cueOpacity = useRef(new Animated.ValueXY()).current;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  // Wiggle animation when first shown, using spring
+  const [firstLoadWiggleShouldShow, setFirstLoadWiggleShouldShow] = useState(true);
+  // avoid double tap animation, using timing
+  const [swipeCueAnimationShouldShow, setSwipeCueAnimationShouldShow] = useState(false); 
+  const [swipeCuePositionX, setSwipeCuePositionX] = useState(screenWidth/2);
+
+  const [tapStartTime, setTapStartTime] = useState(0);
 
   const rotation = position.x.interpolate({
     inputRange: [-screenWidth / 2, 0, screenWidth / 2],
@@ -50,11 +57,11 @@ function CardDeck({ posts }: { posts: Post[] }) {
     extrapolate: "clamp",
   });
 
-    const iconDislikeCueOpacity = cueOpacity.x.interpolate({
-      inputRange: [(-screenWidth * 1) / 2, 0, (screenWidth * 1) / 2],
-      outputRange: [1, 0, 0],
-      extrapolate: "clamp",
-    });
+  const iconDislikeCueOpacity = cueOpacity.x.interpolate({
+    inputRange: [(-screenWidth * 1) / 2, 0, (screenWidth * 1) / 2],
+    outputRange: [1, 0, 0],
+    extrapolate: "clamp",
+  });
 
 
   const nextCardScale = position.x.interpolate({
@@ -93,8 +100,79 @@ function CardDeck({ posts }: { posts: Post[] }) {
     return currIndex === posts.length - 1 ? 0 : currIndex + 1;
   };
 
-  const currCard = () => {
+  const firstLoadWiggleAnimation = () => {
+    const xPos = Math.random() >= 0.5 ? 50 : -50;
+
+    Animated.timing(position, {
+      toValue: { x: xPos, y: 0 },
+      duration: 300,
+      useNativeDriver: true,
+    }).start((finished) => {
+      if (finished) {
+        Animated.spring(position, {
+          toValue: { x: 0, y: 0 },
+          friction: 4,
+          tension: 60,
+          useNativeDriver: true,
+        }).start((finished) => {
+          if (finished) {
+            position.setValue({ x: 0, y: 0 });
+            setFirstLoadWiggleShouldShow(false);
+          }
+        });
+      }
+    });
+  };
+  
+  const swipeCueAnimation = () => {
+    const xPos = (swipeCuePositionX >= screenWidth/2) ? 50 : -50;
+
+    Animated.timing(position, {
+      toValue: { x: xPos, y: 0 },
+      duration: 200,
+      useNativeDriver: true,
+    }).start((finished) => {
+      if (finished) {
+        Animated.timing(position, {
+          toValue: { x: 0, y: 0 },
+          duration: 200,
+          useNativeDriver: true,
+        }).start((finished) => {
+          if (finished) {
+            position.setValue({ x: 0, y: 0 });
+            setSwipeCueAnimationShouldShow(false);
+            setSwipeCuePositionX(screenWidth/2);
+          }
+        });
+      }
+    });
+  };
+
+  const currCard = (showAnimation: boolean) => {
     let tapped = false;
+
+    if (showAnimation) {
+      if (firstLoadWiggleShouldShow) {
+        firstLoadWiggleAnimation();
+      } else if (swipeCueAnimationShouldShow) {
+        swipeCueAnimation();
+      }
+
+      return (
+        <Animated.View
+          key={posts[selectedIndex].id}
+          style={[styles.swipeCard, {
+            transform: [{
+              rotate: rotation,
+              translateX: position.x,
+              translateY: position.y,
+            }],
+          }]}
+        >
+          <Card post={posts[selectedIndex]} size="large" />
+        </Animated.View>
+      );
+    }
 
     return (
       <Animated.View
@@ -141,6 +219,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
               const magnitude =
                 10 - Math.floor((4 * (Math.abs(gestureState.dx) - 120)) / 180);
 
+              //console.log(nxt_position.x);
               // Wiggle back!
               Animated.spring(nxt_position, {
                 toValue: { x: 0, y: 0 },
@@ -170,6 +249,15 @@ function CardDeck({ posts }: { posts: Post[] }) {
                 friction: 5,
                 useNativeDriver: true,
               }).start();
+            }
+          },
+          onPanResponderStart(evt, gestureState) {
+            if (evt.timeStamp - tapStartTime < 300) {
+              // double tap detected, show swipe cue
+              setSwipeCueAnimationShouldShow(true);
+              setSwipeCuePositionX(evt.nativeEvent.locationX);
+            } else {
+              setTapStartTime(evt.timeStamp);
             }
           },
         }).panHandlers}
@@ -206,7 +294,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
     );
   };
 
-  const cards = [nextCard(), currCard()];
+  const cards = [nextCard(), currCard(firstLoadWiggleShouldShow || swipeCueAnimationShouldShow)];
 
   return (
     <View style={styles.container}>

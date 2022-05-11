@@ -7,7 +7,7 @@ interface LanguagePickerProps {
 }
 
 
-function LanguagePicker({callback, selected}: LanguagePickerProps) {
+function AndroidLanguagePicker({callback, selected}: LanguagePickerProps) {
   return(<Picker
           selectedValue={selected}
           onValueChange={(itemValue) => callback(itemValue)}
@@ -27,4 +27,4 @@ function LanguagePicker({callback, selected}: LanguagePickerProps) {
         </Picker>);
 }
 
-export default LanguagePicker;
+export default AndroidLanguagePicker;

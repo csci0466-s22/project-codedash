@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     alignItems: "center",
     borderRadius: 30,
-    borderWidth: 2,
     borderColor: "#ffffff",
     height: 42,
     width: 180,
@@ -15,14 +14,13 @@ const styles = StyleSheet.create({
   },
   avatar: {
     position: "relative",
-    left: -2,
+    left: 0,
     display: "flex",
     alignItems: "flex-start",
   },
   nameBadge: {
     flex: 1, //needed to truncate text
-    paddingHorizontal: 0,
-    paddingRight: 4,
+    paddingHorizontal: 10,
     fontSize: 16,
     color: "#ffffff",
   },

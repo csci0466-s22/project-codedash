@@ -8,16 +8,18 @@ import Avatar from "../Avatar";
 import NativeIconicIcon from "../NativeIconicIcon";
 import React, { ReactFragment, useRef } from "react";
 import CardLikeCue from "../CardLikeCue";
+import { likeFormater } from "../../lib/utils";
 
 
 interface CardProps {
   post: Post;
   size?: "small" | "large";
   children?: ReactFragment;
+  onPress?: (post: Post) => void;
 };
 
 
-function Card({ post, size = "large", children}: CardProps) {
+function Card({ post, size = "large", children, onPress}: CardProps) {
   const styles = size === "large" ? stylesLarge : stylesSmall;
 
   const onMenuPress = () => {
@@ -48,15 +50,10 @@ function Card({ post, size = "large", children}: CardProps) {
     }
   };
 
-  const onSmallCardPress = () => {
-    console.log("Small card pressed");
-    
-  };
-
   // Touchable container
   function TC({ size, children }: { size: string, children: React.ReactChild }) {
     return (size === "small") ?
-      <TouchableWithoutFeedback onPress={onSmallCardPress} onPressIn={onPressIn} onPressOut={onPressOut} >
+      <TouchableWithoutFeedback onPress={()=>{onPress?.(post)}} onPressIn={onPressIn} onPressOut={onPressOut} >
         {children}
       </TouchableWithoutFeedback>
       : <>{children}</>;
@@ -69,13 +66,13 @@ function Card({ post, size = "large", children}: CardProps) {
       <Animated.View style={[styles.CardContainer, { transform: [{ scale: spring }] }]}>
         <View style={styles.CardHeader}>
           {size === "large" ?
-            <AvatarBadge user={post.user} /> :
+            <AvatarBadge user={post.user} shouldShowBorder={true}/> :
             <View style={styles.CardHeaderLeft}>
-              <Avatar size="small" user={post.user} />
-              <Text style={styles.userName}>@{post.user.name}</Text>
+              <AvatarBadge user={post.user} shouldShowBorder={false} />
             </View>}
           <View style={styles.CardHeaderRight}>
-            <Text style={styles.LikeCount}>{post.voteCount + " ❤️"}</Text>
+            <Text style={styles.LikeCountBold}>{likeFormater(post.voteCount)}</Text>
+            <Text style={styles.LikeCount}>{post.voteCount !== 1 ? "  Likes" : " Like"}</Text>
             {size === "large" ?
               <TouchableOpacity onPress={onMenuPress}>
                 <NativeIconicIcon name="ellipsis-vertical" size={18} color="#fff" />
