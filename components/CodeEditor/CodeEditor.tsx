@@ -29,7 +29,7 @@ function CodeEditor({code, updateCode, updateCursorPosition, cursorPosition, lan
     >
       <TextInput
         editable
-        selection={{start: cursorPosition.start, end: cursorPosition.end}}
+        //selection={{start: cursorPosition.start, end: cursorPosition.end}}
         maxLength={256}
         multiline={true}
         autoCorrect={false}
