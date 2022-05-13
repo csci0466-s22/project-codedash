@@ -1,4 +1,4 @@
-import styles from "./CodeStyle";
+import styles from "./EditorCodeOverlayStyle";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
 import {
   View,
@@ -16,7 +16,7 @@ interface CodeProps {
   inEditor: boolean;
 }
 
-function Code2({ code, language, inEditor = false }: CodeProps) {
+function EditorCodeOverlay({ code, language, inEditor = false }: CodeProps) {
 
   const courierFont =
     Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 15
@@ -95,4 +95,4 @@ function Code2({ code, language, inEditor = false }: CodeProps) {
   );
 }
 
-export default Code2;
+export default EditorCodeOverlay;

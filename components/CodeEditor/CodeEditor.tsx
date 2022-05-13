@@ -1,5 +1,5 @@
 import { Language } from "prism-react-renderer";
-import Code2 from "../Code2";
+import EditorCodeOverlay from "../EditorCodeOverlay";
 import { View, Text, TextInput, Platform} from "react-native";
 import styles from "./CodeEditorStyle";
 import { ScrollView } from "react-native-gesture-handler";
@@ -49,7 +49,7 @@ function CodeEditor({code, updateCode, updateCursorPosition, cursorPosition, lan
 
       />
       <View style={styles.overlay} pointerEvents="none">
-        <Code2 code={code} language={language} inEditor />
+        <EditorCodeOverlay code={code} language={language} inEditor />
       </View>
     </ScrollView>
   );
