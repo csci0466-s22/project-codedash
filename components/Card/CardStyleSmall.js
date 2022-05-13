@@ -79,8 +79,9 @@ const styles = StyleSheet.create({
   buttonStyle: {
   },
   buttonTextStyle: {
+  },
+  dismissView: {
   }
-
 });
 
 

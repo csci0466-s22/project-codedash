@@ -102,6 +102,9 @@ function Card({ post, size = "large", children, onPress }: CardProps) {
             setModalVisible(!modalVisible);
           }}
         >
+          <TouchableWithoutFeedback onPress={() => { setModalVisible(!modalVisible) }}>
+            <View style={styles.dismissView}/>
+          </TouchableWithoutFeedback>
           <View style={styles.bottomView}>
             <View style={styles.modalView}>
               <View style={styles.textWrapper}>
