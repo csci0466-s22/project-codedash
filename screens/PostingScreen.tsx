@@ -98,11 +98,6 @@ function PostingScreen({ navigation }: { navigation: any }) {
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
           <View style={styles.buttonWrapper}>
-
-            <View style={styles.buttonContainer}>
-              <PostButton onPress={() => onPostPress()} />
-            </View>
-
             <View style={styles.buttonContainer}>
               {Platform.OS === "android" ?
                 <AndroidLanguagePicker callback={setLanguage} selected={language} /> :
@@ -115,6 +110,10 @@ function PostingScreen({ navigation }: { navigation: any }) {
                   {iosPickerModal}
                 </TouchableOpacity>
               }
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <PostButton onPress={() => onPostPress()} />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -183,9 +182,11 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     position: "absolute",
-    top: 20,
+    top: 30,
     right: 20,
-    flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
   },
   buttonContainer: {
