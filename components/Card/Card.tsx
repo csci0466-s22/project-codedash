@@ -1,14 +1,15 @@
 import stylesLarge from "./CardStyleLarge";
 import stylesSmall from "./CardStyleSmall";
-import { Animated, View, Text, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Animated, View, Text, TouchableOpacity, TouchableWithoutFeedback, Modal, Pressable } from "react-native";
 import AvatarBadge from "../AvatarBadge";
 import Code from "../Code";
 import Post from "../../lib/types/post";
 import Avatar from "../Avatar";
 import NativeIconicIcon from "../NativeIconicIcon";
-import React, { ReactFragment, useRef } from "react";
-import CardLikeCue from "../CardLikeCue";
+import React, { ReactFragment, useRef, useState } from "react";
 import { likeFormater } from "../../lib/utils";
+
+import variables from "../../lib/styles/__variables";
 
 
 interface CardProps {
@@ -19,12 +20,9 @@ interface CardProps {
 };
 
 
-function Card({ post, size = "large", children, onPress}: CardProps) {
+function Card({ post, size = "large", children, onPress }: CardProps) {
   const styles = size === "large" ? stylesLarge : stylesSmall;
-
-  const onMenuPress = () => {
-    console.log("Menu button pressed");
-  };
+  const [modalVisible, setModalVisible] = useState(false);
 
   const spring = useRef(new Animated.Value(1)).current;
 
@@ -53,11 +51,19 @@ function Card({ post, size = "large", children, onPress}: CardProps) {
   // Touchable container
   function TC({ size, children }: { size: string, children: React.ReactChild }) {
     return (size === "small") ?
-      <TouchableWithoutFeedback onPress={()=>{onPress?.(post)}} onPressIn={onPressIn} onPressOut={onPressOut} >
+      <TouchableWithoutFeedback onPress={() => { onPress?.(post) }} onPressIn={onPressIn} onPressOut={onPressOut} >
         {children}
       </TouchableWithoutFeedback>
       : <>{children}</>;
 
+  };
+
+  const onFlagPress = () => {
+    setModalVisible(true);
+  };
+
+  const onReportPress = () => {
+    console.log("reporting post: ", post);
   };
 
 
@@ -66,7 +72,7 @@ function Card({ post, size = "large", children, onPress}: CardProps) {
       <Animated.View style={[styles.CardContainer, { transform: [{ scale: spring }] }]}>
         <View style={styles.CardHeader}>
           {size === "large" ?
-            <AvatarBadge user={post.user} shouldShowBorder={true}/> :
+            <AvatarBadge user={post.user} shouldShowBorder={true} /> :
             <View style={styles.CardHeaderLeft}>
               <AvatarBadge user={post.user} shouldShowBorder={false} />
             </View>}
@@ -74,20 +80,51 @@ function Card({ post, size = "large", children, onPress}: CardProps) {
             <Text style={styles.LikeCountBold}>{likeFormater(post.voteCount)}</Text>
             <Text style={styles.LikeCount}>{post.voteCount !== 1 ? "  Likes" : " Like"}</Text>
             {size === "large" ?
-              <TouchableOpacity onPress={onMenuPress}>
-                <NativeIconicIcon name="ellipsis-vertical" size={18} color="#fff" />
+              <TouchableOpacity onPress={() => { onFlagPress() }}>
+                <NativeIconicIcon name="flag" size={18} color="#fff" />
               </TouchableOpacity>
               :
               null}
           </View>
         </View>
-          <View style={styles.CodeContainer}>
-            <Code
-              code={post.code}
-              language={post.language}
-            />
-            {children}
+        <View style={styles.CodeContainer}>
+          <Code
+            code={post.code}
+            language={post.language}
+          />
+          {children}
+        </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.bottomView}>
+            <View style={styles.modalView}>
+              <View style={styles.textWrapper}>
+                <Text style={styles.textStyle}>Report this post as inappropriate?</Text>
+              </View>
+              <View style={styles.buttonWrapper}>
+                <TouchableOpacity style={[styles.buttonStyle, {backgroundColor: variables.$backgroundColor}]} onPress={() => {
+                  setModalVisible(!modalVisible);
+
+                }}>
+                  <Text style={[styles.buttonTextStyle, {color: variables.$primaryText}]}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.buttonStyle, {backgroundColor: variables.$secondaryBackgroundColor}]} onPress={() => {
+                  setModalVisible(!modalVisible);
+                  onReportPress();
+                }}>
+                  <Text style={[styles.buttonTextStyle, {color: variables.$secondaryText}]}>Report</Text>
+                </TouchableOpacity>
+
+              </View>
+            </View>
           </View>
+        </Modal>
       </Animated.View >
     </TC>
   );

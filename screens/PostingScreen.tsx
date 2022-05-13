@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, SafeAreaView, Platform, Button, Modal, Pressable, Keyboard, Dimensions } from "react-native";
+import { View, Text, StyleSheet, KeyboardAvoidingView, SafeAreaView, Platform, Button, Modal, TouchableOpacity, Keyboard, Dimensions, TouchableWithoutFeedback } from "react-native";
 import { useState, useEffect, useRef } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
@@ -9,7 +9,6 @@ import CodeEditor from "../components/CodeEditor";
 import { useFonts } from "expo-font";
 import { Picker } from "@react-native-picker/picker";
 import AndroidLanguagePicker from "../components/AndroidLanguagePicker";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import NativeIconicIcon from "../components/NativeIconicIcon";
 
 
@@ -18,6 +17,7 @@ const codeWindowPadding = 20;
 function PostingScreen({ navigation }: { navigation: any }) {
   const [textContent, changeContent] = useState<string>('');
   const [language, setLanguage] = useState<Language>('python');
+  const [pickerLang, setPickerLang] = useState<Language>(language);
   const [cursorPosition, updateCursorPosition] = useState({ start: 0, end: 0 });
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -70,8 +70,8 @@ function PostingScreen({ navigation }: { navigation: any }) {
       <View style={styles.bottomView}>
         <View style={styles.modalView}>
           <Picker
-            selectedValue={language}
-            onValueChange={(itemValue) => setLanguage(itemValue)}
+            selectedValue={pickerLang}
+            onValueChange={(itemValue) => setPickerLang(itemValue)}
             style={styles.iosPicker}
             itemStyle={styles.iosPickerItem}
           >
@@ -79,12 +79,15 @@ function PostingScreen({ navigation }: { navigation: any }) {
               <Picker.Item key={language.value} label={language.label} value={language.value} />
             ))}
           </Picker>
-          <Pressable
+          <TouchableOpacity
             style={styles.doneButton}
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => {
+              setModalVisible(false);
+              setLanguage(pickerLang);
+            }}
           >
             <Text style={styles.textStyle}>Done</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>);
@@ -93,24 +96,28 @@ function PostingScreen({ navigation }: { navigation: any }) {
     <SafeAreaView style={styles.wrapper} pointerEvents="box-none">
       <KeyboardToolbar callback={toolBarCallBack} language={language} />
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <View style={styles.buttonWrapper}>
-          <View style={styles.buttonContainer}>
-            <PostButton onPress={() => onPostPress()} />
+        <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
+          <View style={styles.buttonWrapper}>
+
+            <View style={styles.buttonContainer}>
+              <PostButton onPress={() => onPostPress()} />
+            </View>
+
+            <View style={styles.buttonContainer}>
+              {Platform.OS === "android" ?
+                <AndroidLanguagePicker callback={setLanguage} selected={language} /> :
+                <TouchableOpacity
+                  style={styles.pickButton}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <Text style={styles.textStyle}>{languages.find((lang) => lang.value === language)?.label + " "}</Text>
+                  <NativeIconicIcon name="chevron-down-outline" size={20} color="#fff" />
+                  {iosPickerModal}
+                </TouchableOpacity>
+              }
+            </View>
           </View>
-          <View style={styles.buttonContainer}>
-            {Platform.OS === "android" ?
-              <AndroidLanguagePicker callback={setLanguage} selected={language} /> :
-              <TouchableOpacity
-                style={styles.pickButton}
-                onPress={() => setModalVisible(true)}
-              >
-                <Text style={styles.textStyle}>{languages.find((lang) => lang.value===language)?.label + " "}</Text>
-                <NativeIconicIcon name="chevron-down-outline" size={20} color="#fff" />
-                {iosPickerModal}
-              </TouchableOpacity>
-            }
-          </View>
-        </View>
+        </TouchableWithoutFeedback>
 
         <CodeEditor
           code={textContent}

@@ -61,6 +61,65 @@ const styles = StyleSheet.create({
   },
   CodeContainer: {
     padding: 20
+  },
+  bottomView: {
+    flex: 1,
+    position: "absolute",
+    bottom: 0,
+  },
+  modalView: {
+    backgroundColor: "#38383B",
+    borderRadius: 30,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4
+  },
+  textStyle: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  textWrapper: {
+    height: 100,
+    width: Dimensions.get("window").width,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20
+  },
+  buttonWrapper: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: 50,
+    marginBottom: 40,
+  },
+  buttonStyle: {
+    borderRadius: 30,
+    width: 100,
+    height: 40,
+    marginHorizontal: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4
+  },
+  buttonTextStyle: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center"
   }
 });
 
