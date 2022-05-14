@@ -3,8 +3,6 @@ import Highlight, { defaultProps, Language } from "prism-react-renderer";
 import {
   View,
   Text,
-  Platform,
-  StyleSheet,
 } from "react-native";
 //import theme from "prism-react-renderer/themes/nightOwl";
 import theme from "prism-react-renderer/themes/okaidia";
@@ -13,39 +11,9 @@ import { ScrollView } from "react-native-gesture-handler";
 interface CodeProps {
   code: string;
   language: Language;
-  inEditor: boolean;
 }
 
-function EditorCodeOverlay({ code, language, inEditor = false }: CodeProps) {
-
-  const courierFont =
-    Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 15
-      ? "Courier New"
-      : "Courier";
-  const platformFont = Platform.OS === "ios" ? courierFont : "monospace";
-  const fontFamily = "Hack";
-
-
-  const rowStyle2 = (lineNumber: number) => {
-    //this function is now obsolete, refactor to simple style just in the stylesheet file
-
-    return StyleSheet.create({
-      row: {
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-        flexDirection: "row",
-        flexWrap: "nowrap",
-        //height: Platform.OS === "ios" ? 16 : 16.33,
-        height: Platform.OS === "ios" ? 16 : 16.348,
-        width: "100%",
-        borderWidth: 1,
-        position: "relative",
-        top: Platform.OS === "ios" ? -1 : 0,
-        left: -1,
-        borderColor: "transparent",
-      },
-    }).row;
-  };
+function EditorCodeOverlay({ code, language }: CodeProps) {
 
   return (
     <ScrollView style={styles.container}>
@@ -64,8 +32,7 @@ function EditorCodeOverlay({ code, language, inEditor = false }: CodeProps) {
             ]}
           >
             {tokens.map((line, i) => (
-
-              <View key={i} style={rowStyle2(i)}>
+              <View key={i} style={styles.row}>
                 {line.map((token, key) => {
                   const props = getTokenProps({ token, key });
                   return (
@@ -74,15 +41,14 @@ function EditorCodeOverlay({ code, language, inEditor = false }: CodeProps) {
                       style={
                         {
                           color: props.style?.color ?? "#fff",
-                          fontFamily: fontFamily,
+                          fontFamily: "Hack",
                           fontSize: 14,
                           lineHeight: 14,
                           textAlignVertical: "top",
-                          //fontWeight: props.style?.fontWeight ?? "normal",
                         } as any
                       }
                     >
-                      {!token.empty ? props.children : "\n" /* Not sure we need this*/ }
+                      {!token.empty ? props.children : "\n"}
                     </Text>
                   );
                 })}

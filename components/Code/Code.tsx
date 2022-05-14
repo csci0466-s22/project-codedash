@@ -43,7 +43,6 @@ function Code({ code, language, inEditor = false }: CodeProps) {
                             fontSize: 14,
                             lineHeight: 14,
                             textAlignVertical: "top",
-                            //fontWeight: props.style?.fontWeight ?? "normal",
                           } as any
                         }
                       >
