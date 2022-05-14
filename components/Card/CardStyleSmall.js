@@ -63,8 +63,25 @@ const styles = StyleSheet.create({
   },
   CodeContainer: {
     padding: 20
+  },
+  bottomView: {
+  },
+  modalView: {
+  },
+  textStyle: {
+  },
+  textWrapper: {
+  },
+  doneButton: {
+  },
+  buttonWrapper: {
+  },
+  buttonStyle: {
+  },
+  buttonTextStyle: {
+  },
+  dismissView: {
   }
-
 });
 
 

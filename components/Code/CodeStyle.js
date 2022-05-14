@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "flex-start",
     flexWrap: "wrap",
+    
   },
 });
 

@@ -4,20 +4,28 @@ import MainStack from './MainStack';
 
 import NativeIconicIcon from '../components/NativeIconicIcon';
 import ExploreStack from './ExploreStack';
+import useKeyboardOpen from '../lib/hooks/useKeyboardOpen';
+import { Platform } from 'react-native';
 
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabNav() {
   const tabBarActiveTintColor = '#fff';
+  const keyboardOpen = useKeyboardOpen();
 
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        //tabBarHideOnKeyboard: true,
         tabBarStyle: {
           backgroundColor: "#1C1C17",
           borderTopWidth: 0,
+          height: (keyboardOpen) ? 0 : (Platform.OS === 'ios' ? 80 : 60),
+          position: "absolute",
+          bottom: 0,
+          zIndex: keyboardOpen ? -1 : 1000,
         },
         tabBarShowLabel: false,
       }}

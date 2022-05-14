@@ -1,21 +1,54 @@
-import { View, Text, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, SafeAreaView } from "react-native";
-import { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, KeyboardAvoidingView, SafeAreaView, Platform, Button, Modal, TouchableOpacity, Keyboard, Dimensions, TouchableWithoutFeedback } from "react-native";
+import { useState, useEffect, useRef } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
-import KeyboardToolbar from "../components/KeyboardToolbar/KeyboardToolbar";
+import KeyboardToolbar from "../components/KeyboardToolbar";
 import PostButton from "../components/PostButton";
+import useKeyboardOpen from "../lib/hooks/useKeyboardOpen";
+import CodeEditor from "../components/CodeEditor";
+import { useFonts } from "expo-font";
+import { Picker } from "@react-native-picker/picker";
+import AndroidLanguagePicker from "../components/AndroidLanguagePicker";
+import NativeIconicIcon from "../components/NativeIconicIcon";
+
 
 const codeWindowPadding = 20;
 
 function PostingScreen({ navigation }: { navigation: any }) {
-  const [textContent, changeContent] = useState('');
-  const [language, changeLanguage] = useState('python');
-  const maxLines = 18;
-  // removed ability to click outside to close keyboard
-  // replace with button to close keyboard with Keyboard.dismiss()
+  const [textContent, changeContent] = useState<string>('');
+  const [language, setLanguage] = useState<Language>('python');
+  const [pickerLang, setPickerLang] = useState<Language>(language);
+  const [cursorPosition, updateCursorPosition] = useState({ start: 0, end: 0 });
 
-  const toolBarCallBack = (buttonContnet: string) => {
-    changeContent(textContent + buttonContnet);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const languages = [
+    { label: "Python", value: "python" },
+    { label: "Java", value: "java" },
+    { label: "JavaScript", value: "javascript" },
+    { label: "CSS", value: "css" }
+  ]
+
+  //require font
+  let [fontsLoaded] = useFonts({
+    Hack: require("../assets/fonts/Hack-Regular.ttf"),
+  });
+
+
+  const toolBarCallBack = (buttonContent: string) => {
+
+    //cursor position is an index, add text at index
+    changeContent(
+      textContent.substring(0, cursorPosition.start) +
+      buttonContent +
+      textContent.substring(cursorPosition.start)
+    );
+
+    //change cursor position to end of added token
+    updateCursorPosition({
+      start: cursorPosition.start + buttonContent.length,
+      end: cursorPosition.end + buttonContent.length,
+    });
   };
 
   const onPostPress = () => {
@@ -25,45 +58,78 @@ function PostingScreen({ navigation }: { navigation: any }) {
   };
 
 
+  const iosPickerModal = (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(!modalVisible);
+      }}
+    >
+      <View style={styles.bottomView}>
+        <View style={styles.modalView}>
+          <Picker
+            selectedValue={pickerLang}
+            onValueChange={(itemValue) => setPickerLang(itemValue)}
+            style={styles.iosPicker}
+            itemStyle={styles.iosPickerItem}
+          >
+            {languages.map((language) => (
+              <Picker.Item key={language.value} label={language.label} value={language.value} />
+            ))}
+          </Picker>
+          <TouchableOpacity
+            style={styles.doneButton}
+            onPress={() => {
+              setModalVisible(false);
+              setLanguage(pickerLang);
+            }}
+          >
+            <Text style={styles.textStyle}>Done</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>);
 
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.toolbarView}>
-        <KeyboardToolbar callback={toolBarCallBack} />
-      </View>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
-          <View style={styles.postButtonContainer}>
-            <PostButton onPress={() => onPostPress()} />
-          </View>
-          <Text style={styles.text}>Create a new post!</Text>
-          <View style={styles.inputContainer}>
-            <View style={styles.overlay}>
-              <Code code={textContent} language={language as Language} inEditor={true} />
+    <SafeAreaView style={styles.wrapper} pointerEvents="box-none">
+      <KeyboardToolbar callback={toolBarCallBack} language={language} />
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
+          <View style={styles.buttonWrapper}>
+            <View style={styles.buttonContainer}>
+              {Platform.OS === "android" ?
+                <AndroidLanguagePicker callback={setLanguage} selected={language} /> :
+                <TouchableOpacity
+                  style={styles.pickButton}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <Text style={styles.textStyle}>{languages.find((lang) => lang.value === language)?.label + " "}</Text>
+                  <NativeIconicIcon name="chevron-down-outline" size={20} color="#fff" />
+                  {iosPickerModal}
+                </TouchableOpacity>
+              }
             </View>
-            <TextInput
-              editable
-              maxLength={1250}
-              multiline={true}
-              autoCorrect={false}
-              autoCapitalize="none"
-              importantForAutofill="no"
-              textAlignVertical="top"
-              style={styles.input}
-              value={textContent}
-              onChangeText={text => {
-                const lines = text.split('\n');
-                if (lines.length > maxLines) {
-                  text = lines.slice(0, maxLines).join('\n');
-                }
-                changeContent(text);
-              }}
-            />
+
+            <View style={styles.buttonContainer}>
+              <PostButton onPress={() => onPostPress()} />
+            </View>
           </View>
-        </KeyboardAvoidingView >
-      </TouchableWithoutFeedback>
-    </View>
-  )
+        </TouchableWithoutFeedback>
+
+        <CodeEditor
+          code={textContent}
+          language={language}
+          updateCode={(code: string) => changeContent(code)}
+          cursorPosition={cursorPosition}
+          updateCursorPosition={(position: { start: number; end: number }) =>
+            updateCursorPosition(position)
+          }
+        />
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -72,30 +138,34 @@ const styles = StyleSheet.create({
     backgroundColor: "#121212",
   },
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 20
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
   text: {
-    fontSize: 20,
+    fontSize: 30,
     color: "#fff",
     paddingBottom: 20,
-    marginTop: 0
+    marginTop: 0,
   },
   inputContainer: {
     width: "100%",
-    height: "70%",
+    position: "relative",
+    //height: "70%",
+    //height: 250,
   },
   input: {
     // Must keep separate, somehow the padding settings does not work
     paddingTop: codeWindowPadding,
+    paddingBottom: codeWindowPadding,
     paddingLeft: codeWindowPadding,
     paddingRight: codeWindowPadding,
     width: "100%",
     height: "100%",
-    lineHeight: 17, // value to align with overlay
-    color: 'transparent',
+    lineHeight: 19, // value to align with overlay
+    color: "transparent",
   },
   overlay: {
     padding: codeWindowPadding,
@@ -105,15 +175,98 @@ const styles = StyleSheet.create({
     position: "absolute",
     overflow: "hidden",
     borderRadius: 10,
+    lineHeight: 19,
   },
   toolbarView: {
-    zIndex: 2
+    zIndex: 2,
   },
-  postButtonContainer: {
+  buttonWrapper: {
     position: "absolute",
-    top: 50,
-    right: 20
+    top: 30,
+    right: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  bottomView: {
+    flex: 1,
+    position: "absolute",
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    backgroundColor: "#38383B",
+    borderRadius: 30,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4
+  },
+  pickButton: {
+    flexDirection: "row",
+    height: 32,
+    marginTop: 15,
+    justifyContent: "flex-end",
+  },
+  doneButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+  },
+  textStyle: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  iosPicker: {
+    marginVertical: 30,
+    width: Dimensions.get("window").width,
+  },
+  iosPickerItem: {
+    color: "#fff"
   }
 });
 
 export default PostingScreen;
+
+
+
+
+{/* <View style={[styles.inputContainer, { height: inputContainerHeight }]}>
+  <View style={styles.overlay}>
+    <Code code={textContent} language={language as Language} inEditor={true} />
+  </View>
+  <TextInput
+    editable
+    maxLength={1250}
+    multiline={true}
+    autoCorrect={false}
+    autoCompleteType="off"
+    autoCapitalize="none"
+    disableFullscreenUI={true}
+    importantForAutofill="no"
+    keyboardType={keyboardType}
+    returnKeyType="none"
+    textAlignVertical="top"
+    style={styles.input}
+    value={textContent}
+    onChangeText={(text) => {
+      const lines = text.split("\n");
+      if (lines.length > maxLines) {
+        text = lines.slice(0, maxLines).join("\n");
+      }
+      changeContent(text);
+    }}
+  />
+</View>; */}
