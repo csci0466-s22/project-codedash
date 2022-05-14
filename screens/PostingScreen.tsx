@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView, SafeAreaView, Platform, Button, Modal, TouchableOpacity, Keyboard, Dimensions, TouchableWithoutFeedback } from "react-native";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useContext } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
 import KeyboardToolbar from "../components/KeyboardToolbar";
@@ -12,7 +12,8 @@ import AndroidLanguagePicker from "../components/AndroidLanguagePicker";
 import NativeIconicIcon from "../components/NativeIconicIcon";
 import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
 import uuid from 'react-native-uuid';
-
+import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
+import PostsContext from "../Context/PostsContext";
 
 const codeWindowPadding = 20;
 
@@ -23,7 +24,8 @@ function PostingScreen({ navigation }: { navigation: any }) {
   const [cursorPosition, updateCursorPosition] = useState({ start: 0, end: 0 });
 
   const [modalVisible, setModalVisible] = useState(false);
-  console.log("textContent", textContent.length);
+
+  const { setPosts } = useContext(PostsContext);
 
   const languages = [
     { label: "Python", value: "python" },
@@ -73,6 +75,10 @@ function PostingScreen({ navigation }: { navigation: any }) {
       voteCount: 0,
       language: language,
     });
+
+    const newPostsCollection = await useFetchAllPosts();
+    setPosts(newPostsCollection);
+    
     changeContent('');
     navigation.navigate('MainStack', {
     });

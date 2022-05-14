@@ -8,5 +8,7 @@ export default async function useFetchAllPosts(){
     const snapshot = await getDocs(collectionRef);
     const fetchedPosts = snapshot.docs.map(doc => doc.data() as Post);
 
-    return fetchedPosts.length > 0 ? fetchedPosts : examplePosts;
+    // only return the example posts if less than 2 posts in the database
+    // this is to make sure main screen curr card and next card are rendered correctly
+    return fetchedPosts.length >= 2 ? fetchedPosts : examplePosts;
 }

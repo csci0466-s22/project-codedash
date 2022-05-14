@@ -12,11 +12,9 @@ import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
 function MainScreen() {
   const { posts, setPosts } = useContext(PostsContext);
 
-  console.log(posts);
-
   const swipeCallBack = async (post: Post, direction: string) => {
     const fetchedPosts = await useFetchAllPosts();
-    setPosts(fetchedPosts.length > 0 ? fetchedPosts : examplePosts);
+    setPosts(fetchedPosts);
     if (direction === "right") {
       console.log("SWIPE RIGHT");
     } else {

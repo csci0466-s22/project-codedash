@@ -8,7 +8,6 @@ import Fuse from 'fuse.js'
 import { useContext, useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import { Platform } from "react-native";
-import { getFirestore, setDoc, doc, getDocs, collection } from "firebase/firestore";
 import PostsContext from "../Context/PostsContext";
 import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
 import examplePosts from "../examplePost";
@@ -19,7 +18,7 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
   const { posts, setPosts } = useContext(PostsContext);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [displayCards, setDisplayCards] = useState(posts.length > 0 ? posts : examplePosts);
+  const [displayCards, setDisplayCards] = useState(posts.length >=2 ? posts : examplePosts);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const doSearch = (searchTerm: string) => {
