@@ -15,11 +15,10 @@ function MainScreen() {
   console.log(posts);
 
   const swipeCallBack = async (post: Post, direction: string) => {
-    console.log(post.id);
-    setPosts(await useFetchAllPosts());
+    const fetchedPosts = await useFetchAllPosts();
+    setPosts(fetchedPosts.length > 0 ? fetchedPosts : examplePosts);
     if (direction === "right") {
       console.log("SWIPE RIGHT");
-      
     } else {
       console.log("SWIPE LEFT");
     }

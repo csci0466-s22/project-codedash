@@ -23,6 +23,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
   const [cursorPosition, updateCursorPosition] = useState({ start: 0, end: 0 });
 
   const [modalVisible, setModalVisible] = useState(false);
+  console.log("textContent", textContent.length);
 
   const languages = [
     { label: "Python", value: "python" },
@@ -57,27 +58,25 @@ function PostingScreen({ navigation }: { navigation: any }) {
     console.log("post pressed");
 
     const firestore = getFirestore();
-    // Add a new document in collection "cities"
-    
+
     // Using UUID for a unique ID.
     const new_id = uuid.v1() as string;
-
-    await setDoc(doc(firestore, "posts", new_id), { 
+    await setDoc(doc(firestore, "posts", new_id), {
       id: new_id,
-      code: "aaaacccc-----",
+      code: textContent,
       user: {
         id: "9",
-      name: "WayneWang",
-      avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
+        name: "WayneWang",
+        avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
       },
       createdAt: new Date().toISOString(),
-      voteCount: 8000,
-      language: "css"
+      voteCount: 0,
+      language: language,
     });
-
     changeContent('');
     navigation.navigate('MainStack', {
     });
+
   };
 
 
@@ -136,7 +135,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
             </View>
 
             <View style={styles.buttonContainer}>
-              <PostButton onPress={() => onPostPress()} />
+              <PostButton onPress={() => onPostPress()} disabled={textContent.length === 0} />
             </View>
           </View>
         </TouchableWithoutFeedback>

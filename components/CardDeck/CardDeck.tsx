@@ -11,7 +11,6 @@ import Card from "../Card/Card";
 import { Dimensions } from "react-native";
 import * as Haptics from "expo-haptics";
 import CardLikeCue from "../CardLikeCue";
-import useFetchAllPosts from "../../lib/hooks/useFetchAllPosts";
 
 const screenWidth = Dimensions.get("window").width;
 

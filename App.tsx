@@ -8,9 +8,8 @@ import { initializeFireBase } from "./ConfigureFireBase";
 import { useEffect, useState } from "react";
 import Post from "./lib/types/post";
 import PostsContext from "./Context/PostsContext";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
 import examplePosts from "./examplePost";
-import * as SplashScreen from 'expo-splash-screen';
+import useFetchAllPosts from "./lib/hooks/useFetchAllPosts";
 
 
 export default function App() {
@@ -20,12 +19,8 @@ export default function App() {
   const initposts = () => {
     initializeFireBase();
 
-    const firestore = getFirestore();
-    const collectionRef = collection(firestore, 'posts');
-    getDocs(collectionRef).then((snapshot) => {
-      const fetchedPosts = snapshot.docs.map(doc => doc.data() as Post);
-      setPosts(fetchedPosts.length > 0 ? fetchedPosts : examplePosts);
-      console.log("loaded!");
+    useFetchAllPosts().then((fetchedPosts) => {
+      setPosts(fetchedPosts);
       setPostsLoaded(true);
     });
   };
