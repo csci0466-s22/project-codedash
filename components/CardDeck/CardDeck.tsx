@@ -11,10 +11,11 @@ import Card from "../Card/Card";
 import { Dimensions } from "react-native";
 import * as Haptics from "expo-haptics";
 import CardLikeCue from "../CardLikeCue";
+import useFetchAllPosts from "../../lib/hooks/useFetchAllPosts";
 
 const screenWidth = Dimensions.get("window").width;
 
-function CardDeck({ posts }: { posts: Post[] }) {
+function CardDeck({ posts, swipeCallBack }: { posts: Post[], swipeCallBack: (post: Post, direction: string) => void }) {
   const position = useRef(new Animated.ValueXY()).current;
   const nxt_position = useRef(new Animated.ValueXY()).current;
   const cueOpacity = useRef(new Animated.ValueXY()).current;
@@ -88,12 +89,8 @@ function CardDeck({ posts }: { posts: Post[] }) {
     extrapolate: "clamp",
   });
 
-  const swipeHander = (direction: String) => {
-    if (direction === "right") {
-      console.log("SWIPE RIGHT");
-    } else {
-      console.log("SWIPE LEFT");
-    }
+  const swipeHander = (direction: string) => {
+    swipeCallBack(posts[selectedIndex], direction);
   };
 
   const getNextCardIndex = (currIndex: number) => {

@@ -62,7 +62,7 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
     if (searchTerm === "") {
       setDisplayCards(posts);
     }
-  }, [searchTerm]);
+  }, [searchTerm, posts]);
 
 
 

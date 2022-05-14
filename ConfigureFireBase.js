@@ -17,6 +17,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const initializeFireBase = () => {
-  console.log("Should be called only once on initialization");
+  //console.log("Should be called only once on initialization");
   return initializeApp(firebaseConfig);
 };

@@ -61,11 +61,10 @@ function PostingScreen({ navigation }: { navigation: any }) {
     
     // Using UUID for a unique ID.
     const new_id = uuid.v1() as string;
-    console.log(new_id);
 
     await setDoc(doc(firestore, "posts", new_id), { 
       id: new_id,
-      code: "Testing",
+      code: "aaaacccc-----",
       user: {
         id: "9",
       name: "WayneWang",

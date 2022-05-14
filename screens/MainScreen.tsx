@@ -5,12 +5,25 @@ import CardDeck from "../components/CardDeck";
 import examplePosts from "../examplePost";
 import PostsContext from "../Context/PostsContext";
 import { useContext } from "react";
+import Post from "../lib/types/post";
+import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
 
 
 function MainScreen() {
-  const { posts } = useContext(PostsContext);
+  const { posts, setPosts } = useContext(PostsContext);
 
   console.log(posts);
+
+  const swipeCallBack = async (post: Post, direction: string) => {
+    console.log(post.id);
+    setPosts(await useFetchAllPosts());
+    if (direction === "right") {
+      console.log("SWIPE RIGHT");
+      
+    } else {
+      console.log("SWIPE LEFT");
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -25,7 +38,7 @@ function MainScreen() {
           }}
         />
       </View>
-      <CardDeck posts={posts} />
+      <CardDeck posts={posts} swipeCallBack={swipeCallBack}/>
     </SafeAreaView>
   )
 }
