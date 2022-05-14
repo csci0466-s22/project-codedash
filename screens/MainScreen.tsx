@@ -35,16 +35,8 @@ function MainScreen() {
       console.log("No such post!");
     }
 
-    
-
-
     const fetchedPosts = await useFetchAllPosts();
     setPosts(fetchedPosts);
-    if (direction === "right") {
-      console.log("SWIPE RIGHT");
-    } else {
-      console.log("SWIPE LEFT");
-    }
   }
 
   return (

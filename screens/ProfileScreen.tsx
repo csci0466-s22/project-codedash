@@ -6,10 +6,14 @@ import examplePosts from "../examplePost";
 import Post from "../lib/types/post";
 import User from "../lib/types/user";
 import useUserById from "../lib/hooks/useUserById";
+import PostsContext from "../Context/PostsContext";
+import { useContext } from "react";
 
 
 function ProfileScreen({ route, navigation}: { route: any, navigation: any}) {
-  const data: Post[] = examplePosts.filter(post => post.user.id === route.params.id);
+  const { posts } = useContext(PostsContext);
+
+  const data: Post[] = posts.filter(post => post.user.id === route.params.id);
   const user = useUserById(route.params.id);
 
   const onSmallCardPress = (post: Post) => {
