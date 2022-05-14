@@ -3,20 +3,15 @@ import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import AvatarBadge from "../components/AvatarBadge";
 import CardDeck from "../components/CardDeck";
 import examplePosts from "../examplePost";
+import PostsContext from "../Context/PostsContext";
+import { useContext } from "react";
 
 
 function MainScreen() {
-  /**
-   * <Image
-        source={require("../assets/logo-codedash.png")}
-        style={{
-          width: "100%",
-          height: 100,
-          resizeMode: "contain",
-        }}
-      />
-   */
-  
+  const { posts } = useContext(PostsContext);
+
+  console.log(posts);
+
   return (
     <SafeAreaView style={styles.container}>
       
@@ -30,7 +25,7 @@ function MainScreen() {
           }}
         />
       </View>
-      <CardDeck posts={examplePosts} />
+      <CardDeck posts={posts} />
     </SafeAreaView>
   )
 }

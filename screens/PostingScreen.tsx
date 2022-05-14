@@ -10,6 +10,8 @@ import { useFonts } from "expo-font";
 import { Picker } from "@react-native-picker/picker";
 import AndroidLanguagePicker from "../components/AndroidLanguagePicker";
 import NativeIconicIcon from "../components/NativeIconicIcon";
+import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
+import uuid from 'react-native-uuid';
 
 
 const codeWindowPadding = 20;
@@ -51,7 +53,29 @@ function PostingScreen({ navigation }: { navigation: any }) {
     });
   };
 
-  const onPostPress = () => {
+  const onPostPress = async () => {
+    console.log("post pressed");
+
+    const firestore = getFirestore();
+    // Add a new document in collection "cities"
+    
+    // Using UUID for a unique ID.
+    const new_id = uuid.v1() as string;
+    console.log(new_id);
+
+    await setDoc(doc(firestore, "posts", new_id), { 
+      id: new_id,
+      code: "Testing",
+      user: {
+        id: "9",
+      name: "WayneWang",
+      avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
+      },
+      createdAt: new Date().toISOString(),
+      voteCount: 8000,
+      language: "css"
+    });
+
     changeContent('');
     navigation.navigate('MainStack', {
     });
@@ -239,34 +263,3 @@ const styles = StyleSheet.create({
 });
 
 export default PostingScreen;
-
-
-
-
-{/* <View style={[styles.inputContainer, { height: inputContainerHeight }]}>
-  <View style={styles.overlay}>
-    <Code code={textContent} language={language as Language} inEditor={true} />
-  </View>
-  <TextInput
-    editable
-    maxLength={1250}
-    multiline={true}
-    autoCorrect={false}
-    autoCompleteType="off"
-    autoCapitalize="none"
-    disableFullscreenUI={true}
-    importantForAutofill="no"
-    keyboardType={keyboardType}
-    returnKeyType="none"
-    textAlignVertical="top"
-    style={styles.input}
-    value={textContent}
-    onChangeText={(text) => {
-      const lines = text.split("\n");
-      if (lines.length > maxLines) {
-        text = lines.slice(0, maxLines).join("\n");
-      }
-      changeContent(text);
-    }}
-  />
-</View>; */}

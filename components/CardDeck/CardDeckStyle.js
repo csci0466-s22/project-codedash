@@ -1,5 +1,5 @@
- import { StyleSheet } from "react-native";
-
+import { Dimensions, StyleSheet } from "react-native";
+import variables from "../../lib/styles/__variables";
 
 const styles = StyleSheet.create({
  container: {
@@ -28,7 +28,20 @@ const styles = StyleSheet.create({
     borderRadius: 400,
     backgroundColor: "green",
     zIndex: 10,
-  }
+  },
+  noPosts: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: Dimensions.get("window").width,
+    backgroundColor: variables.$backgroundColor
+  },
+  noPostsText: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 10,
+    color: variables.$primaryText,
+  },
 });
 
 

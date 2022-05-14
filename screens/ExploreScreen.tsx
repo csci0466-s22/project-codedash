@@ -1,20 +1,25 @@
-import { View, Text, StyleSheet, FlatList, ListRenderItem, SafeAreaView, Keyboard } from "react-native";
+import { View, Text, StyleSheet, FlatList, ListRenderItem, SafeAreaView, Keyboard, RefreshControl } from "react-native";
 import Avatar from "../components/Avatar";
 import Card from "../components/Card";
-import examplePosts from "../examplePost";
 import Post from "../lib/types/post";
 import SearchBar from "react-native-dynamic-search-bar";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Fuse from 'fuse.js'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import { Platform } from "react-native";
+import { getFirestore, setDoc, doc, getDocs, collection } from "firebase/firestore";
+import PostsContext from "../Context/PostsContext";
+import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
 
 
 
 function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
+  const { posts, setPosts } = useContext(PostsContext);
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [displayCards, setDisplayCards] = useState(examplePosts);
+  const [displayCards, setDisplayCards] = useState(posts);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const doSearch = (searchTerm: string) => {
     const options = {
@@ -42,20 +47,20 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
     navigation.navigate("SingleCard", { post });
   }
 
-  const data: Post[] = examplePosts;
+  const data: Post[] = posts;
 
   const keyExtractor = (post: Post) => post.id;
 
   const ItemRenderer: ListRenderItem<Post> = ({ item }) => {
     return (
-      <Card post={item} size="small" onPress={onSmallCardPress}/>
+      <Card post={item} size="small" onPress={onSmallCardPress} />
     )
   };
 
-  
+
   useEffect(() => {
-    if (searchTerm==="") {
-      setDisplayCards(examplePosts);
+    if (searchTerm === "") {
+      setDisplayCards(posts);
     }
   }, [searchTerm]);
 
@@ -84,13 +89,13 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
         style={styles.SearchBar}
         darkMode={true}
         autoCorrect={false}
-        onChangeText={(text) => {setSearchTerm(text)}}
-        onSearchPress={() => {doSearch(searchTerm)}}
-        onClearPress={() => {setSearchTerm("")}}
-        onSubmitEditing={() => {doSearch(searchTerm)}}
-        
+        onChangeText={(text) => { setSearchTerm(text) }}
+        onSearchPress={() => { doSearch(searchTerm) }}
+        onClearPress={() => { setSearchTerm("") }}
+        onSubmitEditing={() => { doSearch(searchTerm) }}
+
         returnKeyType="search"
-        //onSearchPress={() => {doSearch(searchTerm)}}
+      //onSearchPress={() => {doSearch(searchTerm)}}
       />
 
       <View style={styles.listContainer}>
@@ -100,7 +105,22 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
           keyExtractor={keyExtractor}
           renderItem={ItemRenderer}
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              colors={["#ffffff"]} // for Android
+              tintColor="#ffffff" // for iOS
+              refreshing={isRefreshing}
+              onRefresh={async () => {
+                console.log("refreshing ExploreScreen flatlist");
+                setIsRefreshing(true);
+                setTimeout(() => { setIsRefreshing(false) }, 1000);
+                const allPosts = await useFetchAllPosts();
+                setPosts(allPosts);
+                setDisplayCards(allPosts);
+              }}
+            />}
+        >
         </FlatList>
       </View>
     </SafeAreaView >
@@ -116,7 +136,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     color: "#fff",
-    paddingTop: (Platform.OS==="android" ? 50 : 30),
+    paddingTop: (Platform.OS === "android" ? 50 : 30),
     paddingBottom: 20,
     width: '100%',
     textAlign: 'center',
@@ -124,7 +144,7 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     position: "absolute",
-    top: (Platform.OS==="android" ? 50 : 70),
+    top: (Platform.OS === "android" ? 50 : 70),
     right: 20,
     zIndex: 1,
   },
