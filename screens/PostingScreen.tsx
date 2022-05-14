@@ -10,7 +10,7 @@ import { useFonts } from "expo-font";
 import { Picker } from "@react-native-picker/picker";
 import AndroidLanguagePicker from "../components/AndroidLanguagePicker";
 import NativeIconicIcon from "../components/NativeIconicIcon";
-import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import uuid from 'react-native-uuid';
 import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
 import PostsContext from "../Context/PostsContext";
@@ -57,8 +57,6 @@ function PostingScreen({ navigation }: { navigation: any }) {
   };
 
   const onPostPress = async () => {
-    console.log("post pressed");
-
     const firestore = getFirestore();
 
     // Using UUID for a unique ID.
@@ -78,7 +76,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
 
     const newPostsCollection = await useFetchAllPosts();
     setPosts(newPostsCollection);
-    
+
     changeContent('');
     navigation.navigate('MainStack', {
     });

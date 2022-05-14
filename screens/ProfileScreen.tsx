@@ -13,7 +13,6 @@ function ProfileScreen({ route, navigation}: { route: any, navigation: any}) {
   const user = useUserById(route.params.id);
 
   const onSmallCardPress = (post: Post) => {
-    console.log("small card pressed");
     navigation.navigate("SingleCard", { post });
   }
 

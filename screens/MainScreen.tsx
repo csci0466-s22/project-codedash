@@ -7,12 +7,37 @@ import PostsContext from "../Context/PostsContext";
 import { useContext } from "react";
 import Post from "../lib/types/post";
 import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
+import { collection, getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
 
 
 function MainScreen() {
   const { posts, setPosts } = useContext(PostsContext);
 
   const swipeCallBack = async (post: Post, direction: string) => {
+
+    // update like count
+    const firestore = getFirestore();
+
+    const postRef = doc(firestore, "posts", post.id);
+    const postSnap = await getDoc(postRef);
+   
+    if (postSnap.exists()) {
+      console.log("Document data:", );
+      const origPost = postSnap.data() as Post;
+      const newVoteCount = origPost.voteCount + (direction === "right" ? 1 : -1);
+      const newPost = {
+        ...origPost,
+        voteCount: Math.max(newVoteCount, 0)
+      }
+      await setDoc(doc(firestore, "posts", post.id), newPost);
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such post!");
+    }
+
+    
+
+
     const fetchedPosts = await useFetchAllPosts();
     setPosts(fetchedPosts);
     if (direction === "right") {
@@ -24,7 +49,7 @@ function MainScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      
+
       <View style={styles.badgeContainer}>
         <AvatarBadge
           user={{
@@ -35,7 +60,7 @@ function MainScreen() {
           }}
         />
       </View>
-      <CardDeck posts={posts} swipeCallBack={swipeCallBack}/>
+      <CardDeck posts={posts} swipeCallBack={swipeCallBack} />
     </SafeAreaView>
   )
 }

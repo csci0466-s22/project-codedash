@@ -112,7 +112,6 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
               tintColor="#ffffff" // for iOS
               refreshing={isRefreshing}
               onRefresh={async () => {
-                console.log("refreshing ExploreScreen flatlist");
                 setIsRefreshing(true);
                 setTimeout(() => { setIsRefreshing(false) }, 1000);
                 const allPosts = await useFetchAllPosts();
