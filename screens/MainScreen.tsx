@@ -22,7 +22,6 @@ function MainScreen() {
     const postSnap = await getDoc(postRef);
    
     if (postSnap.exists()) {
-      console.log("Document data:", );
       const origPost = postSnap.data() as Post;
       const newVoteCount = origPost.voteCount + (direction === "right" ? 1 : -1);
       const newPost = {
