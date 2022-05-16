@@ -11,7 +11,7 @@ import { Platform } from "react-native";
 import PostsContext from "../Context/PostsContext";
 import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
 import examplePosts from "../examplePost";
-
+import LoginContext from "../Context/LoginContext";
 
 
 function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
@@ -20,6 +20,8 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [displayCards, setDisplayCards] = useState(posts.length >=2 ? posts : examplePosts);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const { user, setUser } = useContext(LoginContext);
 
   const doSearch = (searchTerm: string) => {
     const options = {
@@ -71,12 +73,7 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.avatarContainer}>
         <Avatar
-          user={{
-            id: "9",
-            name: "WayneWang",
-            avatar:
-              "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-          }}
+          user={user}
           size="small"
           clickable={true}
         />

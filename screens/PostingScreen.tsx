@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView, SafeAreaView, Platform, Button, Modal, TouchableOpacity, Keyboard, Dimensions, TouchableWithoutFeedback } from "react-native";
-import { useState, useContext } from 'react';
+import { useState, useContext, useReducer } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
 import KeyboardToolbar from "../components/KeyboardToolbar";
@@ -14,6 +14,8 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 import uuid from 'react-native-uuid';
 import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
 import PostsContext from "../Context/PostsContext";
+import LoginContext from "../Context/LoginContext";
+import examplePosts from "../examplePost";
 
 const codeWindowPadding = 20;
 
@@ -26,6 +28,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const { setPosts } = useContext(PostsContext);
+  const { user, setUser } = useContext(LoginContext);
 
   const languages = [
     { label: "Python", value: "python" },
@@ -60,18 +63,22 @@ function PostingScreen({ navigation }: { navigation: any }) {
     const firestore = getFirestore();
 
     // Using UUID for a unique ID.
-    const new_id = uuid.v1() as string;
+    const new_id = uuid.v4() as string;
     await setDoc(doc(firestore, "posts", new_id), {
       id: new_id,
       code: textContent,
-      user: {
-        id: "9",
-        name: "WayneWang",
-        avatar: "https://avatars0.githubusercontent.com/u/17098477?s=460&v=4",
-      },
+      user: user,
       createdAt: new Date().toISOString(),
       voteCount: 0,
       language: language,
+    });
+
+    examplePosts.forEach(post => {
+      const new_id = uuid.v4() as string;
+      setDoc(doc(firestore, "posts", new_id), {
+        ...post,
+        id: new_id,
+      });
     });
 
     const newPostsCollection = await useFetchAllPosts();

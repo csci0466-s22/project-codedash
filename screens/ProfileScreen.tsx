@@ -40,8 +40,7 @@ function ProfileScreen({ route, navigation}: { route: any, navigation: any}) {
           user={{
             id: user?.id,
             name: user?.name,
-            avatar:
-              "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
+            avatar: user?.avatar
           }}
           size="xlarge"
           clickable={false}

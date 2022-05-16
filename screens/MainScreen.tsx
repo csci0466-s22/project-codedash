@@ -8,10 +8,12 @@ import { useContext } from "react";
 import Post from "../lib/types/post";
 import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
 import { collection, getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
-
+import LoginContext from "../Context/LoginContext";
 
 function MainScreen() {
   const { posts, setPosts } = useContext(PostsContext);
+
+  const { user, setUser } = useContext(LoginContext);
 
   const swipeCallBack = async (post: Post, direction: string) => {
 
@@ -43,12 +45,7 @@ function MainScreen() {
 
       <View style={styles.badgeContainer}>
         <AvatarBadge
-          user={{
-            id: "9",
-            name: "WayneWang",
-            avatar:
-              "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-          }}
+          user={user}
         />
       </View>
       <CardDeck posts={posts} swipeCallBack={swipeCallBack} />
