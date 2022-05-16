@@ -36,8 +36,8 @@ function MainScreen() {
       console.log("No such post!");
     }
 
-    const fetchedPosts = await useFetchAllPosts();
-    setPosts(fetchedPosts);
+    //const fetchedPosts = await useFetchAllPosts();
+    //setPosts(fetchedPosts);
   }
 
   return (
@@ -46,6 +46,7 @@ function MainScreen() {
       <View style={styles.badgeContainer}>
         <AvatarBadge
           user={user}
+          first={"name"}
         />
       </View>
       <CardDeck posts={posts} swipeCallBack={swipeCallBack} />

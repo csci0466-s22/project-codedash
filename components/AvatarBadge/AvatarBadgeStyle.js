@@ -18,11 +18,21 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "flex-start",
   },
-  nameBadge: {
+  nameBadge1: { // name first
     flex: 1, //needed to truncate text
-    paddingHorizontal: 10,
+    paddingHorizontal: 6,
     fontSize: 16,
     color: "#ffffff",
+    alignItems: "flex-end",
+    paddingTop: 5,
+  },
+  nameBadge2: { // badge first
+    flex: 1, //needed to truncate text
+    paddingHorizontal: 6,
+    fontSize: 16,
+    color: "#ffffff",
+    alignItems: "flex-start",
+    paddingTop: 5,
   },
 });
 

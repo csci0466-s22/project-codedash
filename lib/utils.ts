@@ -101,7 +101,6 @@ export function likeFormater(like: number, digits: number = 3) {
       .find(function (item) {
         return num >= item.value;
       });
-    console.log(num);
     return item
       ? (Math.round(1000*num / item.value)/1000).toFixed(1).replace(rx, "$1") + item.symbol
       : "0";

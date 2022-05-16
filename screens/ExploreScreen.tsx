@@ -40,12 +40,10 @@ function ExploreScreen({ route, navigation }: { route: any, navigation: any }) {
 
     const fuse = new Fuse(data, options);
     const results = fuse.search(searchTerm);
-    //console.log(results);
     setDisplayCards(results.map(r => r.item));
   }
 
   const onSmallCardPress = (post: Post) => {
-    console.log("small card pressed");
     navigation.navigate("SingleCard", { post });
   }
 

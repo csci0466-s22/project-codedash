@@ -28,7 +28,6 @@ function Avatar({user, size, clickable=true}: AvatarProps) {
       //return loading indicator
       return <></>;
     }
-    console.log(user);
     const prefetch = useMemo(() => {
       return (
         <Image

@@ -46,7 +46,7 @@ function ProfileScreen({ route, navigation}: { route: any, navigation: any}) {
           clickable={false}
         />
         <View style={styles.personalInfo}>
-          <Text style={styles.username}>@{user.name}</Text>
+          <Text ellipsizeMode="tail" numberOfLines={1} style={styles.username}>@{user.name}</Text>
           <Text style={styles.followers}>30k followers</Text>
           <Text style={styles.replies}>10k replies</Text>
         </View>
@@ -87,9 +87,9 @@ const styles = StyleSheet.create({
     marginLeft: '13%',
   },
   username: {
-    fontSize: 30,
+    fontSize: 25,
     color: "#ffffff",
-
+    maxWidth: 180,
   },
   followers: {
     fontSize: 20,

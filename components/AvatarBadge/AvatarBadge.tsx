@@ -7,20 +7,33 @@ import styles from "./AvatarBadgeStyle";
 interface AvatarBadgeProps {
   user: User;
   shouldShowBorder?: boolean;
+  first?: "name" | "avatar";
 }
 
-function AvatarBadge({ user, shouldShowBorder }: AvatarBadgeProps) {
+function AvatarBadge({ user, shouldShowBorder, first = "avatar" }: AvatarBadgeProps) {
   const to = { screen: "Profile", params: { id: user?.id } };
-  const { onPress } = useLinkProps({ to }) ?? { onPress: () => {} };
+  const { onPress } = useLinkProps({ to }) ?? { onPress: () => { } };
+
+  const nameBadgeStyle = first==="name" ? styles.nameBadge1 : styles.nameBadge2;
+
+  const avatar = (
+    <View style={styles.avatar}>
+      <Avatar user={user} size="small" clickable={false} />
+    </View>
+  );
+
+  const name = (
+    <View style={nameBadgeStyle}>
+      <Text ellipsizeMode="tail" numberOfLines={1} style={nameBadgeStyle}>
+        @{user?.name}
+      </Text>
+    </View>
+  );
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
-      <View style={styles.avatar}>
-        <Avatar user={user} size="small" clickable={false} />
-      </View>
-      <Text ellipsizeMode="tail" numberOfLines={1} style={styles.nameBadge}>
-        @{user?.name}
-      </Text>
+      {first === "avatar" ? avatar : name}
+      {first === "avatar" ? name : avatar}
     </TouchableOpacity>
   );
 }

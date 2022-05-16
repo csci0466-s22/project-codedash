@@ -73,6 +73,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
       language: language,
     });
 
+    /*
     examplePosts.forEach(post => {
       const new_id = uuid.v4() as string;
       setDoc(doc(firestore, "posts", new_id), {
@@ -80,6 +81,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
         id: new_id,
       });
     });
+    */
 
     const newPostsCollection = await useFetchAllPosts();
     setPosts(newPostsCollection);

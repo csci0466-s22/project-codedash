@@ -13,11 +13,10 @@ function SignInScreen() {
   const { user, setUser } = useContext(LoginContext);
 
   const onDonePress = () => {
-    if (userName.length > 0) {
-      console.log("setting: ", { id: uuid.v4() as string, name: userName });
+    if (userName.length > 0 && userName.length < 20 && userName.indexOf(" ")===-1) {
       setUser({ id: uuid.v4() as string, name: userName });
     } else {
-      Alert.alert("Please enter a username");
+      Alert.alert("Please enter a better username");
     }
   }
 

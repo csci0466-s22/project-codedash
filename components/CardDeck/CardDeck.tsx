@@ -215,7 +215,6 @@ function CardDeck({ posts, swipeCallBack }: { posts: Post[], swipeCallBack: (pos
               const magnitude =
                 10 - Math.floor((4 * (Math.abs(gestureState.dx) - 120)) / 180);
 
-              //console.log(nxt_position.x);
               // Wiggle back!
               Animated.spring(nxt_position, {
                 toValue: { x: 0, y: 0 },

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flexDirection: "row",
     flexWrap: "nowrap",
-    //height: Platform.OS === "ios" ? 16 : 16.33,
+    // Magic numbers (>_<)
     height: Platform.OS === "ios" ? 16 : 16.348,
     width: "100%",
     borderWidth: 1,
