@@ -6,14 +6,17 @@ import examplePosts from "../examplePost";
 import Post from "../lib/types/post";
 import User from "../lib/types/user";
 import useUserById from "../lib/hooks/useUserById";
+import PostsContext from "../Context/PostsContext";
+import { useContext } from "react";
 
 
 function ProfileScreen({ route, navigation}: { route: any, navigation: any}) {
-  const data: Post[] = examplePosts.filter(post => post.user.id === route.params.id);
+  const { posts } = useContext(PostsContext);
+
+  const data: Post[] = posts.filter(post => post.user.id === route.params.id);
   const user = useUserById(route.params.id);
 
   const onSmallCardPress = (post: Post) => {
-    console.log("small card pressed");
     navigation.navigate("SingleCard", { post });
   }
 
@@ -37,14 +40,13 @@ function ProfileScreen({ route, navigation}: { route: any, navigation: any}) {
           user={{
             id: user?.id,
             name: user?.name,
-            avatar:
-              "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
+            avatar: user?.avatar
           }}
           size="xlarge"
           clickable={false}
         />
         <View style={styles.personalInfo}>
-          <Text style={styles.username}>@{user.name}</Text>
+          <Text ellipsizeMode="tail" numberOfLines={1} style={styles.username}>@{user.name}</Text>
           <Text style={styles.followers}>30k followers</Text>
           <Text style={styles.replies}>10k replies</Text>
         </View>
@@ -85,9 +87,9 @@ const styles = StyleSheet.create({
     marginLeft: '13%',
   },
   username: {
-    fontSize: 30,
+    fontSize: 25,
     color: "#ffffff",
-
+    maxWidth: 180,
   },
   followers: {
     fontSize: 20,

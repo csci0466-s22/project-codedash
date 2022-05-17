@@ -4,7 +4,7 @@
  */
 
 import styles from "./CardDeckStyle";
-import { Animated, View, PanResponder, Platform } from "react-native";
+import { Animated, View, PanResponder, Platform, Text } from "react-native";
 import { useRef, useState } from "react";
 import Post from "../../lib/types/post";
 import Card from "../Card/Card";
@@ -14,7 +14,7 @@ import CardLikeCue from "../CardLikeCue";
 
 const screenWidth = Dimensions.get("window").width;
 
-function CardDeck({ posts }: { posts: Post[] }) {
+function CardDeck({ posts, swipeCallBack }: { posts: Post[], swipeCallBack: (post: Post, direction: string) => void }) {
   const position = useRef(new Animated.ValueXY()).current;
   const nxt_position = useRef(new Animated.ValueXY()).current;
   const cueOpacity = useRef(new Animated.ValueXY()).current;
@@ -23,8 +23,8 @@ function CardDeck({ posts }: { posts: Post[] }) {
   // Wiggle animation when first shown, using spring
   const [firstLoadWiggleShouldShow, setFirstLoadWiggleShouldShow] = useState(true);
   // avoid double tap animation, using timing
-  const [swipeCueAnimationShouldShow, setSwipeCueAnimationShouldShow] = useState(false); 
-  const [swipeCuePositionX, setSwipeCuePositionX] = useState(screenWidth/2);
+  const [swipeCueAnimationShouldShow, setSwipeCueAnimationShouldShow] = useState(false);
+  const [swipeCuePositionX, setSwipeCuePositionX] = useState(screenWidth / 2);
 
   const [tapStartTime, setTapStartTime] = useState(0);
 
@@ -88,12 +88,8 @@ function CardDeck({ posts }: { posts: Post[] }) {
     extrapolate: "clamp",
   });
 
-  const swipeHander = (direction: String) => {
-    if (direction === "right") {
-      console.log("SWIPE RIGHT");
-    } else {
-      console.log("SWIPE LEFT");
-    }
+  const swipeHander = (direction: string) => {
+    swipeCallBack(posts[selectedIndex], direction);
   };
 
   const getNextCardIndex = (currIndex: number) => {
@@ -123,9 +119,9 @@ function CardDeck({ posts }: { posts: Post[] }) {
       }
     });
   };
-  
+
   const swipeCueAnimation = () => {
-    const xPos = (swipeCuePositionX >= screenWidth/2) ? 50 : -50;
+    const xPos = (swipeCuePositionX >= screenWidth / 2) ? 50 : -50;
 
     Animated.timing(position, {
       toValue: { x: xPos, y: 0 },
@@ -141,7 +137,7 @@ function CardDeck({ posts }: { posts: Post[] }) {
           if (finished) {
             position.setValue({ x: 0, y: 0 });
             setSwipeCueAnimationShouldShow(false);
-            setSwipeCuePositionX(screenWidth/2);
+            setSwipeCuePositionX(screenWidth / 2);
           }
         });
       }
@@ -219,7 +215,6 @@ function CardDeck({ posts }: { posts: Post[] }) {
               const magnitude =
                 10 - Math.floor((4 * (Math.abs(gestureState.dx) - 120)) / 180);
 
-              //console.log(nxt_position.x);
               // Wiggle back!
               Animated.spring(nxt_position, {
                 toValue: { x: 0, y: 0 },
@@ -316,7 +311,11 @@ function CardDeck({ posts }: { posts: Post[] }) {
         ]}
         pointerEvents={"box-none"}
       />
-      {cards}
+      {/* To make sure we have at least 2 posts so that curr card and next card render correctly */}
+      {posts.length >= 2 ? cards :
+        <View style={styles.noPosts}>
+          <Text style={styles.noPostsText}>No posts to show</Text>
+        </View>}
     </View>
   );
 }

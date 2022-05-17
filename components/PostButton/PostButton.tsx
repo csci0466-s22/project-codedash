@@ -4,10 +4,10 @@ import NativeIconicIcon from "../NativeIconicIcon";
 import styles from "./PostButtonStyle";
 
 
-function PostButton({ onPress }: { onPress: () => void }) {
+function PostButton({ onPress, disabled }: { onPress: () => void, disabled: boolean }) {
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} disabled={disabled}>
       <View style={styles.iconOutline}>
         <NativeIconicIcon name="send" size={26} color="#fff" />
       </View>

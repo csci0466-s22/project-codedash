@@ -24,11 +24,10 @@ function Avatar({user, size, clickable=true}: AvatarProps) {
     const {onPress} = (clickable) ? useLinkProps({to}): {onPress: () => {}};
 
 
-    if (!user || !user.id || !user.avatar) {
+    if (!user || !user.id) {
       //return loading indicator
       return <></>;
     }
-    
     const prefetch = useMemo(() => {
       return (
         <Image

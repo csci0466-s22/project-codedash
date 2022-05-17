@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView, SafeAreaView, Platform, Button, Modal, TouchableOpacity, Keyboard, Dimensions, TouchableWithoutFeedback } from "react-native";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useContext, useReducer } from 'react';
 import Code from "../components/Code";
 import { Language } from "prism-react-renderer";
 import KeyboardToolbar from "../components/KeyboardToolbar";
@@ -10,7 +10,12 @@ import { useFonts } from "expo-font";
 import { Picker } from "@react-native-picker/picker";
 import AndroidLanguagePicker from "../components/AndroidLanguagePicker";
 import NativeIconicIcon from "../components/NativeIconicIcon";
-
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import uuid from 'react-native-uuid';
+import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
+import PostsContext from "../Context/PostsContext";
+import LoginContext from "../Context/LoginContext";
+import examplePosts from "../examplePost";
 
 const codeWindowPadding = 20;
 
@@ -21,6 +26,9 @@ function PostingScreen({ navigation }: { navigation: any }) {
   const [cursorPosition, updateCursorPosition] = useState({ start: 0, end: 0 });
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  const { setPosts } = useContext(PostsContext);
+  const { user, setUser } = useContext(LoginContext);
 
   const languages = [
     { label: "Python", value: "python" },
@@ -51,10 +59,37 @@ function PostingScreen({ navigation }: { navigation: any }) {
     });
   };
 
-  const onPostPress = () => {
+  const onPostPress = async () => {
+    const firestore = getFirestore();
+
+    // Using UUID for a unique ID.
+    const new_id = uuid.v4() as string;
+    await setDoc(doc(firestore, "posts", new_id), {
+      id: new_id,
+      code: textContent,
+      user: user,
+      createdAt: new Date().toISOString(),
+      voteCount: 0,
+      language: language,
+    });
+
+    /*
+    examplePosts.forEach(post => {
+      const new_id = uuid.v4() as string;
+      setDoc(doc(firestore, "posts", new_id), {
+        ...post,
+        id: new_id,
+      });
+    });
+    */
+
+    const newPostsCollection = await useFetchAllPosts();
+    setPosts(newPostsCollection);
+
     changeContent('');
     navigation.navigate('MainStack', {
     });
+
   };
 
 
@@ -113,7 +148,7 @@ function PostingScreen({ navigation }: { navigation: any }) {
             </View>
 
             <View style={styles.buttonContainer}>
-              <PostButton onPress={() => onPostPress()} />
+              <PostButton onPress={() => onPostPress()} disabled={textContent.length === 0} />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -239,34 +274,3 @@ const styles = StyleSheet.create({
 });
 
 export default PostingScreen;
-
-
-
-
-{/* <View style={[styles.inputContainer, { height: inputContainerHeight }]}>
-  <View style={styles.overlay}>
-    <Code code={textContent} language={language as Language} inEditor={true} />
-  </View>
-  <TextInput
-    editable
-    maxLength={1250}
-    multiline={true}
-    autoCorrect={false}
-    autoCompleteType="off"
-    autoCapitalize="none"
-    disableFullscreenUI={true}
-    importantForAutofill="no"
-    keyboardType={keyboardType}
-    returnKeyType="none"
-    textAlignVertical="top"
-    style={styles.input}
-    value={textContent}
-    onChangeText={(text) => {
-      const lines = text.split("\n");
-      if (lines.length > maxLines) {
-        text = lines.slice(0, maxLines).join("\n");
-      }
-      changeContent(text);
-    }}
-  />
-</View>; */}

@@ -3,34 +3,53 @@ import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import AvatarBadge from "../components/AvatarBadge";
 import CardDeck from "../components/CardDeck";
 import examplePosts from "../examplePost";
-
+import PostsContext from "../Context/PostsContext";
+import { useContext } from "react";
+import Post from "../lib/types/post";
+import useFetchAllPosts from "../lib/hooks/useFetchAllPosts";
+import { collection, getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
+import LoginContext from "../Context/LoginContext";
 
 function MainScreen() {
-  /**
-   * <Image
-        source={require("../assets/logo-codedash.png")}
-        style={{
-          width: "100%",
-          height: 100,
-          resizeMode: "contain",
-        }}
-      />
-   */
-  
+  const { posts, setPosts } = useContext(PostsContext);
+
+  const { user, setUser } = useContext(LoginContext);
+
+  const swipeCallBack = async (post: Post, direction: string) => {
+
+    // update like count
+    const firestore = getFirestore();
+
+    const postRef = doc(firestore, "posts", post.id);
+    const postSnap = await getDoc(postRef);
+   
+    if (postSnap.exists()) {
+      const origPost = postSnap.data() as Post;
+      const newVoteCount = origPost.voteCount + (direction === "right" ? 1 : -1);
+      const newPost = {
+        ...origPost,
+        voteCount: Math.max(newVoteCount, 0)
+      }
+      await setDoc(doc(firestore, "posts", post.id), newPost);
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such post!");
+    }
+
+    //const fetchedPosts = await useFetchAllPosts();
+    //setPosts(fetchedPosts);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      
+
       <View style={styles.badgeContainer}>
         <AvatarBadge
-          user={{
-            id: "9",
-            name: "WayneWang",
-            avatar:
-              "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-          }}
+          user={user}
+          first={"name"}
         />
       </View>
-      <CardDeck posts={examplePosts} />
+      <CardDeck posts={posts} swipeCallBack={swipeCallBack} />
     </SafeAreaView>
   )
 }

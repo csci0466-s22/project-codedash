@@ -102,7 +102,7 @@ export function likeFormater(like: number, digits: number = 3) {
         return num >= item.value;
       });
     return item
-      ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol
+      ? (Math.round(1000*num / item.value)/1000).toFixed(1).replace(rx, "$1") + item.symbol
       : "0";
 
 }
