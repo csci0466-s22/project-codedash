@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "practical03-solution",
-    "slug": "practical03-solution",
+    "name": "codedash",
+    "slug": "codedash",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#121212"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -17,12 +17,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "backgroundColor": "#121212"
     },
     "android": {
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#121212"
       }
     },
     "web": {
